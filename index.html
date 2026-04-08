@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POWER ECO-DOUCHE - Design, écologique & économique</title>
+    <meta name="description" content="Douchette écologique qui économise 50% d'eau avec pierres naturelles thérapeutiques. Design français, raccord universel.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: oklch(0.55 0.15 160);
+            --secondary: oklch(0.45 0.1 220);
+            --accent: oklch(0.7 0.18 80);
+            --background: oklch(0.98 0.005 90);
+            --text: oklch(0.2 0.02 160);
+            --white: #ffffff;
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --border-radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .cart-icon {
+            position: relative;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: transform 0.2s ease;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.05);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent);
+            color: var(--text);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--background) 0%, var(--primary) 100%);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background: url('/img/product-1.png') center/cover no-repeat;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .cta-button {
+            background: var(--accent);
+            color: var(--text);
+            padding: 18px 40px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .trust-badges {
+            display: flex;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-soft);
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Benefits Section */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .benefit-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .benefit-card p {
+            color: var(--secondary);
+            line-height: 1.6;
+        }
+
+        /* Natural Stones Section */
+        .stones-section {
+            background: linear-gradient(135deg, var(--background) 0%, white 100%);
+            position: relative;
+        }
+
+        .stones-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/img/product-2.png') center/cover no-repeat;
+            opacity: 0.05;
+            z-index: 1;
+        }
+
+        .stones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stone-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .stone-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .stone-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Product Showcase */
+        .product-showcase {
+            background: white;
+        }
+
+        .showcase-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .product-badges {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .product-badge {
+            background: var(--accent);
+            color: var(--text);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Boutique Section */
+        .boutique-section {
+            background: var(--background);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: var(--secondary);
+        }
+
+        /* Cart Drawer */
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100%;
+            background: white;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+            z-index: 2000;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-drawer.open {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h3 {
+            color: var(--text);
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        .cart-items {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .cart-total {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: var(--accent);
+            color: var(--text);
+            border: none;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Social Media Section */
+        .social-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .social-section .section-title {
+            color: white;
+        }
+
+        .video-placeholder {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .heygen-brand {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .generate-video-btn {
+            background: var(--accent);
+            color: var(--text);
+            padding: 15px 30px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            color: white;
+            font-size: 2rem;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: scale(1.2);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: white;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 1rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text);
+            color: white;
+            padding: 3rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-logo {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        .payment-badges {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .payment-badge {
+            background: white;
+            color: var(--text);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0.8;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .trust-badges {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .showcase-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-drawer {
+                width: 100%;
+                right: -100%;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .social-links {
+                gap: 1rem;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .benefit-card {
+                opacity: 1;
+                transform: none;
+            }
+            
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body x-data="ecoDouche()">
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <a href="#" class="logo">POWER ECO-DOUCHE</a>
+                <ul class="nav-links">
+                    <li><a href="#accueil">Accueil</a></li>
+                    <li><a href="#boutique">Boutique</a></li>
+                    <li><a href="#conseils">Conseils</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <button class="cart-icon" @click="toggleCart">
+                    🛒
+                    <span class="cart-count" x-show="cartItemsCount > 0" x-text="cartItemsCount"></span>
+                </button>
+                <div class="mobile-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="accueil">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Économisez 50% d'eau</h1>
+                <p class="hero-subtitle">Design, écologique & économique</p>
+                <a href="#benefits" class="cta-button">Découvrir</a>
+                <div class="trust-badges">
+                    <div class="badge">
+                        <span>🇫🇷</span>
+                        <span>Entreprise Française</span>
+                    </div>
+                    <div class="badge">
+                        <span>♻️</span>
+                        <span>Écologique</span>
+                    </div>
+                    <div class="badge">
+                        <span>💧</span>
+                        <span>-50% d'eau</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits">
+        <div class="container">
+            <h2 class="section-title">5 bonnes raisons de changer</h2>
+            <p class="section-subtitle">Découvrez pourquoi notre douchette révolutionne votre quotidien</p>
+            <div class="benefits-grid">
+                <div class="benefit-card fade-in">
+                    <div class="benefit-icon">🌊</div>
+                    <h3>Bien-être</h3>
+                    <p>3 positions de massage : tonique, relaxant et mixte. Personnalisez votre expérience selon votre humeur.</p>
+                </div>
+                <div class="benefit-card fade-in">
+                    <div class="benefit-icon">✨</div>
+                    <h3>Peau en bonne santé</h3>
+                    <p>Les pierres naturelles purifient l'eau en neutralisant le chlore et les impuretés pour une peau douce.</p>
+                </div>
+                <div class="benefit-card fade-in">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Économie d'eau</h3>
+                    <p>Micro-trous brevetés qui économisent 50% d'eau sans perdre en pression ni en confort.</p>
+                </div>
+                <div class="benefit-card fade-in">
+                    <div class="benefit-icon">🔧</div>
+                    <h3>Facile d'entretien</h3>
+                    <p>Pierres rechargeables et raccord universel. Installation simple en 5 minutes.</p>
+                </div>
+                <div class="benefit-card fade-in">
+                    <div class="benefit-icon">💪</div>
+                    <h3>Puissance du jet</h3>
+                    <p>Buses coniques avec effet de pincement pour un jet puissant et uniforme.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Natural Stones Section -->
+    <section class="stones-section">
+        <div class="container">
+            <h2 class="section-title">Le pouvoir des pierres naturelles</h2>
+            <p class="section-subtitle">Trois pierres thérapeutiques pour transformer votre eau</p>
+            <div class="stones-grid">
+                <div class="stone-card fade-in">
+                    <img src="/img/POWER_ECO_DOUCHE_GERMANIUM.jpg" alt="Pierre Germanium" class="stone-image">
+                    <h3>Germanium</h3>
+                    <p>Neutralise le calcaire, le chlore et les métaux lourds. Protège votre peau des agressions chimiques.</p>
+                </div>
+                <div class="stone-card fade-in">
+                    <img src="/img/POWER_ECO_DOUCHE_TOURMALINE.jpg" alt="Pierre Tourmaline" class="stone-image">
+                    <h3>Tourmaline</h3>
+                    <p>Favorise la relaxation et améliore la qualité du sommeil grâce à ses propriétés apaisantes.</p>
+                </div>
+                <div class="stone-card fade-in">
+                    <img src="/img/POWER_ECO_DOUCHE_ARGILE_GRISE.jpg" alt="Argile Grise" class="stone-image">
+                    <h3>Argile Grise</h3>
+                    <p>Pierre pure et fine aux propriétés nettoyantes. Adoucit l'eau pour un confort optimal.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Showcase -->
+    <section class="product-showcase">
+        <div class="container">
+            <div class="showcase-content">
+                <div>
+                    <img src="/img/DOUCHETTE_DUO_POWER_ECO_DOUCHE.jpg" alt="Douchette Power Eco-Douche" class="product-image">
+                </div>
+                <div>
+                    <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">La douchette révolutionnaire</h2>
+                    <ul class="feature-list">
+                        <li>Raccord universel 15/21</li>
+                        <li>3 positions de massage</li>
+                        <li>Pierres naturelles thérapeutiques</li>
+                        <li>50% d'économie d'eau</li>
+                        <li>Installation en 5 minutes</li>
+                        <li>Garantie 2 ans</li>
+                    </ul>
+                    <div class="product-badges">
+                        <span class="product-badge">Recommandé pour les peaux sensibles</span>
+                        <span class="product-badge">Anticalcaire</span>
+                        <span class="product-badge">Écologique</span>
+                        <span class="product-badge">Économique</span>
+                        <span class="product-badge">Hypoallergénique</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Boutique Section -->
+    <section class="boutique-section" id="boutique">
+        <div class="container">
+            <h2 class="section-title">Notre Boutique</h2>
+            <p class="section-subtitle">Découvrez notre gamme complète de produits écologiques</p>
+            <div class="products-grid">
+                <template x-for="product in products" :key="product.id">
+                    <div class="product-card fade-in">
+                        <img :src="product.image" :alt="product.name">
+                        <div class="product-info">
+                            <h3 class="product-name" x-text="product.name"></h3>
+                            <div class="product-price" x-text="'€' + product.price.toFixed(2)"></div>
+                            <button class="add-to-cart" @click="addToCart(product)">Ajouter au panier</button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Section -->
+    <section class="social-section">
+        <div class="container">
+            <h2 class="section-title">Suivez-nous sur les réseaux</h2>
+            <div class="video-placeholder">
+                <div class="heygen-brand">Contenu vidéo généré par IA</div>
+                <button class="generate-video-btn" @click="generateVideo">🎬 Générer une vidéo virale</button>
+            </div>
+            <div class="social-links">
+                <a href="https://facebook.com/powerecodouche" target="_blank" class="social-link">📘</a>
+                <a href="https://instagram.com/powerecodouche_" target="_blank" class="social-link">📷</a>
+                <a href="#" target="_blank" class="social-link">💼</a>
+            </div>
+            <div x-show="recentVideos.length > 0">
+                <h3 style="text-align: center; margin-bottom: 2rem;">Vidéos récentes</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <template x-for="video in recentVideos" :key="video.id">
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 16px; padding: 1rem;">
+                            <h4 x-text="video.title"></h4>
+                            <p x-text="video.description"></p>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conseils Section -->
+    <section id="conseils" style="background: url('/img/product-3.png') center/cover no-repeat; position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9);"></div>
+        <div class="container" style="position: relative; z-index: 2;">
+            <h2 class="section-title">Conseils d'entretien</h2>
+            <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+                <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">🧽 Nettoyage de la grille</h3>
+                    <p>Nettoyez la grille tous les 6 mois avec une brosse douce pour maintenir un débit optimal.</p>
+                </div>
+                <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">💎 Recharge des pierres</h3>
+                    <p>Remplacez les pierres tous les 2 ans pour conserver leurs propriétés thérapeutiques.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2 class="section-title">Contactez-nous</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Power Eco-Douche</h3>
+                    <p>Power Eco-Douche est une entreprise française spécialisée dans les solutions de douche écologiques et économiques.</p>
+                    <p><strong>Téléphone :</strong> +33 6 13 24 23 72</p>
+                    <p><strong>Email :</strong> info@powerecodouche.com</p>
+                    <p><strong>Horaires :</strong> Lundi, mardi, jeudi, vendredi 14h-18h</p>
+                </div>
+                <form class="contact-form" @submit.prevent="submitContact">
+                    <div class="form-group">
+                        <label for="name">Nom</label>
+                        <input type="text" id="name" x-model="contactForm.name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" x-model="contactForm.email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" x-model="contactForm.message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Envoyer</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <img src="/img/Logo_Power_Eco_Douche_footer.png" alt="Power Eco-Douche" class="footer-logo">
+                    <div class="payment-badges">
+                        <span class="payment-badge">Visa</span>
+                        <span class="payment-badge">Mastercard</span>
+                        <span class="payment-badge">PayPal</span>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <span class="payment-badge">Garantie 2 ans</span>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <a href="#accueil">Accueil</a>
+                    <a href="#boutique">Boutique</a>
+                    <a href="#conseils">Conseils</a>
+                    <a href="#contact">À Propos</a>
+                    <a href="#contact">Contact</a>
+                    <a href="#">CGV</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Power Eco-Douche. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Drawer -->
+    <div class="cart-drawer" :class="{ 'open': cartOpen }">
+        <div class="cart-header">
+            <h3>Panier</h3>
+            <button class="close-cart" @click="toggleCart">&times;</button>
+        </div>
+        <div class="cart-items">
+            <template x-for="item in cartItems" :key="item.id">
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name" x-text="item.name"></div>
+                        <div class="cart-item-price" x-text="'€' + item.price.toFixed(2)"></div>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" @click="updateQuantity(item.id, item.quantity - 1)">-</button>
+                        <span x-text="item.quantity"></span>
+                        <button class="quantity-btn" @click="updateQuantity(item.id, item.quantity + 1)">+</button>
+                    </div>
+                </div>
+            </template>
+            <div x-show="cartItems.length === 0" style="text-align: center; padding: 2rem;">
+                <p>Votre panier est vide</p>
+            </div>
+        </div>
+        <div class="cart-footer" x-show="cartItems.length > 0">
+            <div class="cart-total">Total: €<span x-text="cartTotal.toFixed(2)"></span></div>
+            <button class="checkout-btn" @click="checkout">Commander</button>
+        </div>
+    </div>
+
+    <script>
+        function ecoDouche() {
+            return {
+                cartOpen: false,
+                cartItems: JSON.parse(localStorage.getItem('ecoDouche_cart') || '[]'),
+                contactForm: {
+                    name: '',
+                    email: '',
+                    message: ''
+                },
+                recentVideos: [],
+                products: [
+                    { id: 1, name: 'Douchette Power Eco-Douche', price: 29.90, image: '/img/product-1.png' },
+                    { id: 2, name: 'Enceinte Bluetooth (noire)', price: 12.00, image: '/img/product-4.png' },
+                    { id: 3, name: 'Enceinte Bluetooth (rose)', price: 12.00, image: '/img/product-4.png' },
+                    { id: 4, name: 'Enceinte Bluetooth (bleu)', price: 12.00, image: '/img/product-4.png' },
+                    { id: 5, name: 'Enceinte Bluetooth (jaune)', price: 12.00, image: '/img/product-4.png' },
+                    { id: 6, name: 'Enceinte Bluetooth (vert)', price: 12.00, image: '/img/product-4.png' },
+                    { id: 7, name: 'Enceinte Bluetooth (blanc)', price: 12.00, image: '/img/product-4.png' },
+                    { id: 8, name: 'Recharge de billes', price: 9.90, image: '/img/product-2.png' },
+                    { id: 9, name: 'Flexible de douche', price: 14.90, image: '/img/product-4.png' },
+                    { id: 10, name: 'Tapis de bains', price: 19.90, image: '/img/product-4.png' }
+                ],
+
+                get cartItemsCount() {
+                    return this.cartItems.reduce((total, item) => total + item.quantity, 0);
+                },
+
+                get cartTotal() {
+                    return this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+                },
+
+                init() {
+                    this.loadRecentVideos();
+                    this.initAnimations();
+                },
+
+                toggleCart() {
+                    this.cartOpen = !this.cartOpen;
+                },
+
+                addToCart(product) {
+                    const existingItem = this.cartItems.find(item => item.id === product.id);
+                    
+                    if (existingItem) {
+                        existingItem.quantity += 1;
+                    } else {
+                        this.cartItems.push({
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                            quantity: 1
+                        });
+                    }
+                    
+                    this.saveCart();
+                    this.animateCartButton();
+                },
+
+                updateQuantity(productId, newQuantity) {
+                    if (newQuantity <= 0) {
+                        this.cartItems = this.cartItems.filter(item => item.id !== productId);
+                    } else {
+                        const item = this.cartItems.find(item => item.id === productId);
+                        if (item) {
+                            item.quantity = newQuantity;
+                        }
+                    }
+                    this.saveCart();
+                },
+
+                saveCart() {
+                    localStorage.setItem('ecoDouche_cart', JSON.stringify(this.cartItems));
+                },
+
+                animateCartButton() {
+                    const cartIcon = document.querySelector('.cart-icon');
+                    cartIcon.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        cartIcon.style.transform = 'scale(1)';
+                    }, 200);
+                },
+
+                async checkout() {
+                    if (this.cartItems.length === 0) return;
+
+                    const orderData = {
+                        items: this.cartItems,
+                        total: this.cartTotal,
+                        customer: {
+                            name: prompt('Nom complet:'),
+                            email: prompt('Email:'),
+                            phone: prompt('Téléphone:'),
+                            address: prompt('Adresse:')
+                        }
+                    };
+
+                    try {
+                        const response = await fetch('/api/ecodouche/order', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(orderData)
+                        });
+
+                        if (response.ok) {
+                            alert('Commande envoyée avec succès! Nous vous contacterons bientôt.');
+                            this.cartItems = [];
+                            this.saveCart();
+                            this.toggleCart();
+                        } else {
+                            alert('Erreur lors de l\'envoi de la commande. Veuillez réessayer.');
+                        }
+                    } catch (error) {
+                        console.error('Checkout error:', error);
+                        alert('Erreur de connexion. Veuillez réessayer plus tard.');
+                    }
+                },
+
+                async submitContact() {
+                    try {
+                        const response = await fetch('/api/ecodouche/contact', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(this.contactForm)
+                        });
+
+                        if (response.ok) {
+                            alert('Message envoyé avec succès! Nous vous répondrons bientôt.');
+                            this.contactForm = { name: '', email: '', message: '' };
+                        } else {
+                            alert('Erreur lors de l\'envoi du message. Veuillez réessayer.');
+                        }
+                    } catch (error) {
+                        console.error('Contact error:', error);
+                        alert('Erreur de connexion. Veuillez réessayer plus tard.');
+                    }
+                },
+
+                async generateVideo() {
+                    const script = "Découvrez la douchette Power Eco-Douche : économisez 50% d'eau avec notre technologie révolutionnaire aux pierres naturelles. Design français, écologique et économique !";
+                    
+                    try {
+                        const response = await fetch('/api/ecodouche/heygen/generate', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ script })
+                        });
+
+                        if (response.ok) {
+                            alert('Vidéo en cours de génération! Elle sera disponible dans quelques minutes.');
+                            setTimeout(() => this.loadRecentVideos(), 5000);
+                        } else {
+                            alert('Erreur lors de la génération de la vidéo. Veuillez réessayer.');
+                        }
+                    } catch (error) {
+                        console.error('Video generation error:', error);
+                        alert('Erreur de connexion. Veuillez réessayer plus tard.');
+                    }
+                },
+
+                async loadRecentVideos() {
+                    try {
+                        const response = await fetch('/api/ecodouche/social/videos');
+                        if (response.ok) {
+                            this.recentVideos = await response.json();
+                        }
+                    } catch (error) {
+                        console.error('Load videos error:', error);
+                    }
+                },
+
+                initAnimations() {
+                    gsap.registerPlugin(ScrollTrigger);
+
+                    // Hero animation
+                    gsap.fromTo('.hero-content', {
+                        opacity: 0,
+                        y: 50
+                    }, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        ease: "power3.out"
+                    });
+
+                    // Benefit cards animation
+                    gsap.fromTo('.benefit-card', {
+                        opacity: 0,
+                        y: 50
+                    }, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        stagger: 0.2,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: '.benefits-grid',
+                            start: 'top 80%'
+                        }
+                    });
+
+                    // Stone cards animation
+                    gsap.fromTo('.stone-card', {
+                        opacity: 0,
+                        y: 50
+                    }, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        stagger: 0.2,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: '.stones-grid',
+                            start: 'top 80%'
+                        }
+                    });
+
+                    // Product cards animation
+                    gsap.fromTo('.product-card', {
+                        opacity: 0,
+                        y: 30
+                    }, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.6,
+                        stagger: 0.1,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: '.products-grid',
+                            start: 'top 80%'
+                        }
+                    });
+
+                    // Smooth scrolling for CTA button
+                    document.querySelector('.cta-button').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        document.querySelector('#benefits').scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
