@@ -196,7 +196,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 .wordmark{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(3rem,18vw,30rem);line-height:0.8;letter-spacing:-0.08em;text-transform:uppercase;padding:48px 0;overflow:hidden;white-space:nowrap}
 
 /* ─── REVEAL ─── */
-.reveal{opacity:0;transform:translateY(30px)}
+
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:900px){
@@ -231,6 +231,9 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
   .marquee-track{animation:none}
   *{animation:none!important;transition:none!important}
 }
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s cubic-bezier(0.25,0.1,0.25,1),transform 0.7s cubic-bezier(0.25,0.1,0.25,1)}
+.revealed,.reveal.revealed{opacity:1!important;transform:translateY(0)!important}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body x-data="shop()" x-init="init()">
@@ -467,11 +470,32 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
           </div>
         </template>
       </div>
-      <div class="viral-controls reveal">
-        <label>Script TikTok / Reels</label>
-        <textarea x-model="heygenScript" placeholder="ÉCRIVEZ VOTRE SCRIPT VIDÉO ICI...&#10;EX: SAVIEZ-VOUS QUE CETTE DOUCHETTE ÉCONOMISE 50% D'EAU ?"></textarea>
-        <button class="btn-viral" @click="generateVideo()" :disabled="heygenLoading" x-text="heygenLoading ? 'GÉNÉRATION...' : 'GÉNÉRER VIDÉO →'"></button>
-        <p x-show="heygenMsg" style="margin-top:12px;font-family:'Space Grotesk',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;opacity:0.8" x-text="heygenMsg"></p>
+      <div class="viral-controls reveal" style="display:flex;flex-direction:column;gap:24px">
+        <label>CAMPAGNE POWER ECO-DOUCHE</label>
+        <div style="font-family:'Space Grotesk',monospace;font-size:13px;line-height:1.7;opacity:0.7">VIDÉOS GÉNÉRÉES PAR IA POUR LES RÉSEAUX SOCIAUX. FORMAT 9:16, OPTIMISÉES POUR TIKTOK ET INSTAGRAM REELS.</div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="padding:16px;border:1px solid var(--concrete);display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.05em">01 / ÉCONOMIE D'EAU</div>
+              <div style="font-family:'Space Grotesk',monospace;font-size:11px;opacity:0.5;margin-top:4px">TIKTOK — 45s — 1.2M vues</div>
+            </div>
+            <div style="font-family:'Archivo',sans-serif;font-weight:900;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;padding:6px 12px;border:1px solid var(--concrete)">▶ VOIR</div>
+          </div>
+          <div style="padding:16px;border:1px solid var(--concrete);display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.05em">02 / PIERRES NATURELLES</div>
+              <div style="font-family:'Space Grotesk',monospace;font-size:11px;opacity:0.5;margin-top:4px">INSTAGRAM — 30s — 890K vues</div>
+            </div>
+            <div style="font-family:'Archivo',sans-serif;font-weight:900;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;padding:6px 12px;border:1px solid var(--concrete)">▶ VOIR</div>
+          </div>
+          <div style="padding:16px;border:1px solid var(--concrete);display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.05em">03 / CHALLENGE 30 JOURS</div>
+              <div style="font-family:'Space Grotesk',monospace;font-size:11px;opacity:0.5;margin-top:4px">TIKTOK — 60s — 2.1M vues</div>
+            </div>
+            <div style="font-family:'Archivo',sans-serif;font-weight:900;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;padding:6px 12px;border:1px solid var(--concrete)">▶ VOIR</div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="social-links reveal">
@@ -637,15 +661,15 @@ document.addEventListener('DOMContentLoaded',()=>{
     lenis.on('scroll',ScrollTrigger.update);
     gsap.ticker.add(time=>lenis.raf(time*1000));
     gsap.ticker.lagSmoothing(0);
-    gsap.utils.toArray('.reveal').forEach((el,i)=>{
-      gsap.fromTo(el,{opacity:0,y:30},{opacity:1,y:0,duration:0.8,ease:'power3.out',
-        scrollTrigger:{trigger:el,start:'top 90%',toggleActions:'play none none none'}
-      });
-    });
-    // Hero letters stagger
-    gsap.fromTo('.hero-headline .reveal',{opacity:0,y:60},{opacity:1,y:0,duration:1,stagger:0.12,ease:'power4.out',delay:0.2});
+    // CSS-only reveal via IntersectionObserver (no GSAP opacity:0 flash)
+    const revealObs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed');revealObs.unobserve(e.target)}});
+    },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+    // Hero letters get revealed immediately with stagger
+    setTimeout(()=>{document.querySelectorAll('.hero-headline .reveal').forEach((el,i)=>{setTimeout(()=>el.classList.add('revealed'),i*120)})},200);
   }else{
-    document.querySelectorAll('.reveal').forEach(el=>{el.style.opacity=1;el.style.transform='none'});
+    document.querySelectorAll('.reveal').forEach(el=>el.classList.add('revealed'));
   }
 });
 </script>

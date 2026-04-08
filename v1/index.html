@@ -162,7 +162,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 .footer-badges{display:flex;gap:12px;align-items:center;opacity:0.35;font-size:11px;letter-spacing:0.08em;text-transform:uppercase}
 
 /* REVEAL */
-.reveal{opacity:0;transform:translateY(40px)}
+
 
 /* RESPONSIVE */
 @media(max-width:900px){
@@ -188,6 +188,9 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
   .reveal{opacity:1;transform:none}
   *{animation:none!important;transition:none!important}
 }
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s cubic-bezier(0.25,0.1,0.25,1),transform 0.7s cubic-bezier(0.25,0.1,0.25,1)}
+.revealed,.reveal.revealed{opacity:1!important;transform:translateY(0)!important}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body x-data="shop()" x-init="init()">
@@ -370,10 +373,25 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
       <div>
         <p class="pull-quote reveal" style="margin-bottom:40px">« Le contenu qui<br>fait la différence. »</p>
         <div class="heygen-area reveal">
-          <label class="subhead" style="display:block;margin-bottom:8px">Script TikTok / Instagram</label>
-          <textarea x-model="heygenScript" placeholder="Écrivez votre script vidéo ici... (ex: Saviez-vous que cette douchette innovante économise 50% d'eau ?)"></textarea>
-          <button class="heygen-btn" @click="generateVideo()" x-text="heygenLoading ? 'Génération en cours...' : '🎬 Générer une vidéo virale'" :disabled="heygenLoading"></button>
-          <p x-show="heygenMsg" style="margin-top:8px;font-size:13px;color:var(--moss);font-style:italic" x-text="heygenMsg"></p>
+          <div style="font-family:'Fraunces',serif;font-style:italic;font-size:20px;margin-bottom:16px">Nos vidéos virales</div>
+          <p style="font-size:14px;opacity:0.7;line-height:1.6;margin-bottom:20px">Contenu généré par IA pour promouvoir la Power Eco-Douche sur TikTok et Instagram Reels. Chaque vidéo met en avant les bénéfices écologiques et naturels du produit.</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <div style="aspect-ratio:9/16;background:var(--stone);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:4px;padding:16px;text-align:center">
+              <div style="font-size:28px;margin-bottom:8px">🚿</div>
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">TikTok</div>
+              <div style="font-size:12px;opacity:0.6;line-height:1.4">Économisez 50% d'eau sans effort</div>
+            </div>
+            <div style="aspect-ratio:9/16;background:var(--stone);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:4px;padding:16px;text-align:center">
+              <div style="font-size:28px;margin-bottom:8px">✨</div>
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">Instagram</div>
+              <div style="font-size:12px;opacity:0.6;line-height:1.4">3 pierres, 3 bienfaits naturels</div>
+            </div>
+            <div style="aspect-ratio:9/16;background:var(--stone);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:4px;padding:16px;text-align:center">
+              <div style="font-size:28px;margin-bottom:8px">🌿</div>
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">TikTok</div>
+              <div style="font-size:12px;opacity:0.6;line-height:1.4">Challenge 30 jours : -45% facture</div>
+            </div>
+          </div>
         </div>
         <div class="social-links reveal" style="margin-top:32px">
           <a href="https://www.facebook.com/powerecodouche" target="_blank" class="link-draw">Facebook</a>
@@ -541,14 +559,14 @@ document.addEventListener('DOMContentLoaded',()=>{
   gsap.ticker.lagSmoothing(0);
   // Reveal animations
   const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // CSS-only reveal via IntersectionObserver (no GSAP opacity:0 flash)
   if(!prefersReduced){
-    gsap.utils.toArray('.reveal').forEach((el,i)=>{
-      gsap.fromTo(el,{opacity:0,y:40},{opacity:1,y:0,duration:0.9,ease:'power3.out',
-        scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'}
-      });
-    });
+    const revealObs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed');revealObs.unobserve(e.target)}});
+    },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
   }else{
-    document.querySelectorAll('.reveal').forEach(el=>{el.style.opacity=1;el.style.transform='none'});
+    document.querySelectorAll('.reveal').forEach(el=>el.classList.add('revealed'));
   }
 });
 </script>
