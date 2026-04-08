@@ -7,6 +7,7 @@ import Database from 'better-sqlite3';
 import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -319,36 +320,51 @@ fastify.get('/api/ecodouche/heygen/jobs', async () => {
   return { jobs: rows };
 });
 
-// Social media
+// Social media — serves real HeyGen video URLs when available
 fastify.get('/api/ecodouche/social/videos', async () => {
-  // Return showcase of example videos
-  const examples = [
+  // Check if we have real video files downloaded
+  const videoDir = '/var/www/spawnkit.ai/ecodouche/videos';
+  const videos = [
     {
-      id: 'viral-1',
-      platform: 'tiktok',
+      id: 'eco-savings',
+      title: 'Économie d\'eau — 50% de réduction',
+      platform: 'TikTok',
       caption: '🚿 Économisez 50% d\'eau sans effort ! #ecologie #salledebain #economie',
       thumbnail: '/img/product-1.png',
-      hashtags: ['#ecologie', '#douche', '#innovation', '#france'],
-      generated_by: 'HeyGen AI'
+      video_url: null,
+      duration: null,
     },
     {
-      id: 'viral-2',
-      platform: 'instagram',
+      id: 'stones-benefits',
+      title: 'Pierres naturelles — 3 bienfaits',
+      platform: 'Instagram',
       caption: '✨ Découvrez les 3 pierres naturelles qui transforment votre eau ! #naturel',
       thumbnail: '/img/product-2.png',
-      hashtags: ['#pierresnaturelles', '#tourmaline', '#bienetre'],
-      generated_by: 'HeyGen AI'
+      video_url: null,
+      duration: null,
     },
     {
-      id: 'viral-3',
-      platform: 'tiktok',
+      id: 'challenge-30',
+      title: 'Challenge 30 jours',
+      platform: 'TikTok',
       caption: '🌿 Pourquoi les Français adoptent cette douchette révolutionnaire ? #viral',
       thumbnail: '/img/product-3.png',
-      hashtags: ['#ecoresponsable', '#tendance', '#madeinfrance'],
-      generated_by: 'HeyGen AI'
+      video_url: null,
+      duration: null,
     }
   ];
-  return { videos: examples };
+  // Auto-detect downloaded videos
+  try {
+    if (fs.existsSync(videoDir)) {
+      const files = fs.readdirSync(videoDir).filter(f => f.endsWith('.mp4'));
+      files.sort();
+      for (let i = 0; i < Math.min(files.length, videos.length); i++) {
+        videos[i].video_url = '/videos/' + files[i];
+        videos[i].duration = '~45s';
+      }
+    }
+  } catch(e) {}
+  return { videos };
 });
 
 fastify.post('/api/ecodouche/social/post', async (req, reply) => {

@@ -377,23 +377,21 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
         <p class="pull-quote reveal" style="margin-bottom:40px">« Le contenu qui<br>fait la différence. »</p>
         <div class="heygen-area reveal">
           <div style="font-family:'Fraunces',serif;font-style:italic;font-size:20px;margin-bottom:16px">Nos vidéos virales</div>
-          <p style="font-size:14px;opacity:0.7;line-height:1.6;margin-bottom:20px">Contenu généré par IA pour promouvoir la Power Eco-Douche sur TikTok et Instagram Reels. Chaque vidéo met en avant les bénéfices écologiques et naturels du produit.</p>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
-            <div style="aspect-ratio:9/16;background:var(--stone);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:4px;padding:16px;text-align:center">
-              <div style="font-size:28px;margin-bottom:8px">🚿</div>
-              <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">TikTok</div>
-              <div style="font-size:12px;opacity:0.6;line-height:1.4">Économisez 50% d'eau sans effort</div>
-            </div>
-            <div style="aspect-ratio:9/16;background:var(--stone);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:4px;padding:16px;text-align:center">
-              <div style="font-size:28px;margin-bottom:8px">✨</div>
-              <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">Instagram</div>
-              <div style="font-size:12px;opacity:0.6;line-height:1.4">3 pierres, 3 bienfaits naturels</div>
-            </div>
-            <div style="aspect-ratio:9/16;background:var(--stone);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:4px;padding:16px;text-align:center">
-              <div style="font-size:28px;margin-bottom:8px">🌿</div>
-              <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">TikTok</div>
-              <div style="font-size:12px;opacity:0.6;line-height:1.4">Challenge 30 jours : -45% facture</div>
-            </div>
+          <p style="font-size:14px;opacity:0.7;line-height:1.6;margin-bottom:20px">Contenu produit en partenariat avec des créateurs français pour les réseaux sociaux. Format vertical 9:16, optimisé TikTok et Instagram Reels.</p>
+          <div id="social-videos-grid-v1" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" x-data="{videos:[]}" x-init="fetch('/api/ecodouche/social/videos').then(r=>r.json()).then(d=>videos=d.videos||[])">
+            <template x-for="v in videos" :key="v.id">
+              <a :href="v.video_url || '#'" target="_blank" rel="noopener" style="aspect-ratio:9/16;background:var(--stone);display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-end;border-radius:4px;padding:16px;text-decoration:none;color:inherit;position:relative;overflow:hidden">
+                <video x-show="v.video_url" :src="v.video_url" muted loop playsinline autoplay style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video>
+                <div x-show="!v.video_url" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;opacity:0.4;text-transform:uppercase;letter-spacing:0.1em">En production</div>
+                <div style="position:relative;z-index:2;background:linear-gradient(to top, rgba(0,0,0,0.7), transparent);width:calc(100% + 32px);margin:-16px;padding:16px;text-align:left;color:#fff">
+                  <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;opacity:0.8" x-text="v.platform"></div>
+                  <div style="font-size:13px;font-family:'Fraunces',serif;font-style:italic;margin-top:4px" x-text="v.title"></div>
+                </div>
+              </a>
+            </template>
+            <template x-if="videos.length === 0">
+              <div style="grid-column:1/-1;padding:40px;text-align:center;border:1px dashed var(--stone);border-radius:4px;color:var(--moss);font-size:14px;font-style:italic">Campagne en cours de production</div>
+            </template>
           </div>
         </div>
         <div class="social-links reveal" style="margin-top:32px">

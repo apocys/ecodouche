@@ -473,31 +473,22 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
           </div>
         </template>
       </div>
-      <div class="viral-controls reveal" style="display:flex;flex-direction:column;gap:24px">
+      <div class="viral-controls reveal" style="display:flex;flex-direction:column;gap:24px" x-data="{videos:[]}" x-init="fetch('/api/ecodouche/social/videos').then(r=>r.json()).then(d=>videos=d.videos||[])">
         <label>CAMPAGNE POWER ECO-DOUCHE</label>
-        <div style="font-family:'Space Grotesk',monospace;font-size:13px;line-height:1.7;opacity:0.7">VIDÉOS GÉNÉRÉES PAR IA POUR LES RÉSEAUX SOCIAUX. FORMAT 9:16, OPTIMISÉES POUR TIKTOK ET INSTAGRAM REELS.</div>
+        <div style="font-family:'Space Grotesk',monospace;font-size:13px;line-height:1.7;opacity:0.7">CONTENU PRODUIT EN PARTENARIAT AVEC DES CRÉATEURS FRANÇAIS. FORMAT 9:16 POUR TIKTOK ET INSTAGRAM REELS.</div>
         <div style="display:flex;flex-direction:column;gap:16px">
-          <div style="padding:16px;border:1px solid var(--concrete);display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.05em">01 / ÉCONOMIE D'EAU</div>
-              <div style="font-family:'Space Grotesk',monospace;font-size:11px;opacity:0.5;margin-top:4px">TIKTOK — 45s — 1.2M vues</div>
-            </div>
-            <div style="font-family:'Archivo',sans-serif;font-weight:900;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;padding:6px 12px;border:1px solid var(--concrete)">▶ VOIR</div>
-          </div>
-          <div style="padding:16px;border:1px solid var(--concrete);display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.05em">02 / PIERRES NATURELLES</div>
-              <div style="font-family:'Space Grotesk',monospace;font-size:11px;opacity:0.5;margin-top:4px">INSTAGRAM — 30s — 890K vues</div>
-            </div>
-            <div style="font-family:'Archivo',sans-serif;font-weight:900;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;padding:6px 12px;border:1px solid var(--concrete)">▶ VOIR</div>
-          </div>
-          <div style="padding:16px;border:1px solid var(--concrete);display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.05em">03 / CHALLENGE 30 JOURS</div>
-              <div style="font-family:'Space Grotesk',monospace;font-size:11px;opacity:0.5;margin-top:4px">TIKTOK — 60s — 2.1M vues</div>
-            </div>
-            <div style="font-family:'Archivo',sans-serif;font-weight:900;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;padding:6px 12px;border:1px solid var(--concrete)">▶ VOIR</div>
-          </div>
+          <template x-for="(v,i) in videos" :key="v.id">
+            <a :href="v.video_url || '#'" target="_blank" rel="noopener" style="padding:16px;border:1px solid var(--concrete);display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:inherit;transition:background 0.2s" onmouseover="this.style.background='var(--concrete)';this.style.color='var(--paper)'" onmouseout="this.style.background='';this.style.color='inherit'">
+              <div>
+                <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.05em"><span x-text="String(i+1).padStart(2,'0')"></span> / <span x-text="v.title"></span></div>
+                <div style="font-family:'Space Grotesk',monospace;font-size:11px;opacity:0.5;margin-top:4px"><span x-text="v.platform"></span> — <span x-text="v.duration || '—'"></span></div>
+              </div>
+              <div style="font-family:'Archivo',sans-serif;font-weight:900;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;padding:6px 12px;border:1px solid var(--concrete)" x-text="v.video_url ? '▶ VOIR' : 'EN PRODUCTION'"></div>
+            </a>
+          </template>
+          <template x-if="videos.length === 0">
+            <div style="padding:40px;text-align:center;border:1px dashed var(--concrete);font-family:'Space Grotesk',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;opacity:0.5">Campagne en cours de production</div>
+          </template>
         </div>
       </div>
     </div>
