@@ -353,14 +353,17 @@ fastify.get('/api/ecodouche/social/videos', async () => {
       duration: null,
     }
   ];
-  // Auto-detect downloaded videos
+  // Auto-detect downloaded videos by id-based filename match
   try {
     if (fs.existsSync(videoDir)) {
-      const files = fs.readdirSync(videoDir).filter(f => f.endsWith('.mp4'));
-      files.sort();
-      for (let i = 0; i < Math.min(files.length, videos.length); i++) {
-        videos[i].video_url = '/videos/' + files[i];
-        videos[i].duration = '~45s';
+      for (const v of videos) {
+        const filepath = `${videoDir}/${v.id}.mp4`;
+        if (fs.existsSync(filepath)) {
+          v.video_url = `/videos/${v.id}.mp4`;
+          const stat = fs.statSync(filepath);
+          v.size_mb = (stat.size / 1024 / 1024).toFixed(1);
+          v.duration = '~18s';
+        }
       }
     }
   } catch(e) {}
