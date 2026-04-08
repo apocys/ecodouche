@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POWER ECO-DOUCHE — Plongez dans l'expérience</title>
+<link rel="icon" href="data:,">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<style>
+:root{
+  --deep:oklch(0.14 0.025 215);
+  --water:oklch(0.52 0.08 210);
+  --surface:oklch(0.92 0.008 200);
+  --mist:oklch(0.82 0.015 195);
+  --glacier:oklch(0.72 0.04 200);
+  --stone:oklch(0.55 0.02 80);
+  --sun:oklch(0.82 0.12 80);
+  --deep-text:oklch(0.95 0.01 210);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+body{background:var(--deep);color:var(--deep-text);font-family:'General Sans',sans-serif;font-size:18px;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none}
+@media(max-width:768px){body{cursor:auto}}
+::selection{background:var(--water);color:var(--deep)}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{cursor:none;border:none;background:none;font:inherit;color:inherit}
+@media(max-width:768px){button{cursor:auto}}
+
+/* CUSTOM CURSOR */
+.cursor{position:fixed;width:20px;height:20px;border:2px solid var(--water);border-radius:50%;pointer-events:none;z-index:10000;transition:width 0.3s,height 0.3s,border-color 0.3s,margin 0.3s;margin-left:-10px;margin-top:-10px;mix-blend-mode:difference}
+.cursor.hovering{width:48px;height:48px;margin-left:-24px;margin-top:-24px;border-color:var(--sun)}
+.cursor-trail{position:fixed;width:6px;height:6px;background:var(--water);border-radius:50%;pointer-events:none;z-index:9999;opacity:0.5;transition:opacity 0.6s}
+@media(max-width:768px){.cursor,.cursor-trail{display:none}}
+
+/* DISPLAY FONT */
+.display{font-family:'Clash Display',sans-serif}
+.caps{text-transform:uppercase;letter-spacing:0.12em;font-weight:500}
+.meta{font-family:'General Sans',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500}
+
+/* LAYOUT */
+.pad-x{padding-left:clamp(24px,5vw,80px);padding-right:clamp(24px,5vw,80px)}
+.pad-y{padding-top:clamp(80px,12vw,160px);padding-bottom:clamp(80px,12vw,160px)}
+.max-w{max-width:1400px;margin:0 auto}
+
+/* ─── HERO ─── */
+.hero{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.hero-content{position:relative;z-index:1}
+.hero-nav{position:absolute;top:32px;right:clamp(24px,5vw,80px);z-index:2;display:flex;gap:32px}
+.hero-nav a{font-family:'General Sans',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;opacity:0.6;transition:opacity 0.3s}
+.hero-nav a:hover{opacity:1}
+.hero-logo{position:absolute;top:36px;left:clamp(24px,5vw,80px);z-index:2;font-family:'Clash Display',sans-serif;font-size:13px;letter-spacing:0.08em;font-weight:600;opacity:0.7}
+.hero-headline{font-family:'Clash Display',sans-serif;font-size:clamp(3.5rem,13vw,16rem);font-weight:500;letter-spacing:-0.04em;line-height:0.9;margin-left:clamp(24px,5vw,80px)}
+.hero-headline .word{display:inline-block;overflow:hidden}
+.hero-headline .word span{display:inline-block}
+.hero-sub{margin-top:32px;margin-left:clamp(24px,5vw,80px);font-size:clamp(1rem,1.5vw,1.2rem);opacity:0;max-width:45ch;font-weight:400}
+.hero-scroll{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);z-index:2;text-align:center}
+.hero-scroll .line{width:1px;height:48px;background:var(--water);margin:12px auto 0;opacity:0.5;animation:scrollLine 2s ease infinite}
+@keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ─── VOYAGE SECTION ─── */
+.voyage{position:relative;overflow:hidden}
+.voyage-layer{min-height:80vh;display:flex;align-items:center;justify-content:center;position:relative;transition:background 0.6s}
+.voyage-layer .word{font-family:'Clash Display',sans-serif;font-size:clamp(3rem,10vw,10rem);font-weight:600;letter-spacing:-0.03em;opacity:0.15}
+.voyage-layer .desc{position:absolute;bottom:20%;left:clamp(24px,5vw,80px);max-width:40ch;font-size:16px;opacity:0.6}
+
+/* ─── STONES 3D FLIP ─── */
+.stones-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(16px,3vw,48px)}
+.stone-card{perspective:800px;cursor:pointer}
+.stone-inner{position:relative;width:100%;aspect-ratio:3/4;transition:transform 0.8s cubic-bezier(.25,.1,.25,1);transform-style:preserve-3d}
+.stone-card.flipped .stone-inner{transform:rotateY(180deg)}
+.stone-front,.stone-back{position:absolute;inset:0;backface-visibility:hidden;overflow:hidden;border:1px solid oklch(0.52 0.08 210 / 0.2);padding:clamp(16px,2vw,32px);display:flex;flex-direction:column;justify-content:flex-end}
+.stone-front{background:var(--deep)}
+.stone-front img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.6;filter:saturate(0.7)}
+.stone-front .label{position:relative;z-index:1}
+.stone-front .label h3{font-family:'Clash Display',sans-serif;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:600;margin-bottom:4px}
+.stone-front .label .sub{font-size:13px;opacity:0.6}
+.stone-back{transform:rotateY(180deg);background:var(--water);color:var(--deep);padding:clamp(24px,3vw,40px);justify-content:center}
+.stone-back h3{font-family:'Clash Display',sans-serif;font-size:clamp(1.3rem,2vw,2rem);font-weight:600;margin-bottom:16px}
+.stone-back p{font-size:15px;line-height:1.7;opacity:0.8}
+.stone-back .close-hint{margin-top:24px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.5}
+.stone-card:hover .stone-inner{transform:translateY(-6px)}
+.stone-card.flipped:hover .stone-inner{transform:rotateY(180deg) translateY(-6px)}
+
+/* ─── PRODUCT REVEAL ─── */
+.product-section{position:relative;overflow:hidden}
+.product-hero-img{width:clamp(280px,50vw,700px);margin:0 auto;position:relative;z-index:1}
+.product-callouts{position:absolute;inset:0;z-index:2;pointer-events:none}
+.callout{position:absolute;font-family:'General Sans',sans-serif;font-size:13px;letter-spacing:0.06em;opacity:0;display:flex;align-items:center;gap:8px}
+.callout .dot{width:8px;height:8px;border-radius:50%;background:var(--sun);flex-shrink:0}
+.callout .line{height:1px;width:48px;background:var(--sun);opacity:0.5}
+.callout-1{top:20%;left:60%}
+.callout-2{top:50%;right:60%}
+.callout-3{top:75%;left:55%}
+.product-price{text-align:center;margin-top:48px}
+.product-price .amt{font-family:'Clash Display',sans-serif;font-size:clamp(3rem,7vw,6rem);font-weight:600;letter-spacing:-0.03em}
+.product-price .eur{font-size:clamp(1.5rem,3vw,2.5rem);opacity:0.5}
+
+/* ─── BOUTIQUE ─── */
+.boutique-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:clamp(16px,2vw,24px)}
+.product-tile{position:relative;background:oklch(0.18 0.02 210);border:1px solid oklch(0.52 0.08 210 / 0.12);overflow:hidden;transition:transform 0.4s cubic-bezier(.25,.1,.25,1),border-color 0.4s;cursor:pointer}
+.product-tile:hover{transform:translateY(-8px);border-color:var(--water)}
+.product-tile:hover~.product-tile{opacity:0.5}
+.product-tile img{width:100%;aspect-ratio:1;object-fit:cover;opacity:0.8;transition:opacity 0.4s}
+.product-tile:hover img{opacity:1}
+.product-tile .info{padding:20px}
+.product-tile .info .n{font-family:'Clash Display',sans-serif;font-size:15px;font-weight:500;margin-bottom:4px}
+.product-tile .info .p{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:600;color:var(--sun)}
+.product-tile .add-overlay{position:absolute;inset:0;background:oklch(0.52 0.08 210 / 0.9);color:var(--deep);display:flex;align-items:center;justify-content:center;font-family:'Clash Display',sans-serif;font-weight:600;font-size:16px;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.product-tile:hover .add-overlay{opacity:1;pointer-events:auto}
+
+/* ─── CART ─── */
+.cart-btn{position:fixed;top:32px;right:clamp(24px,5vw,80px);z-index:1000;width:48px;height:48px;border-radius:50%;background:var(--water);color:var(--deep);display:flex;align-items:center;justify-content:center;font-family:'Clash Display',sans-serif;font-weight:700;font-size:16px;transition:transform 0.3s,box-shadow 0.3s}
+.cart-btn:hover{transform:scale(1.1)}
+.cart-pulse{animation:cartPulse 0.5s ease}
+@keyframes cartPulse{0%{box-shadow:0 0 0 0 oklch(0.52 0.08 210 / 0.6)}100%{box-shadow:0 0 0 24px oklch(0.52 0.08 210 / 0)}}
+.cart-drawer{position:fixed;top:0;right:0;width:min(440px,92vw);height:100vh;background:var(--deep);border-left:1px solid oklch(0.52 0.08 210 / 0.2);z-index:2000;transform:translateX(100%);transition:transform 0.5s cubic-bezier(.25,.1,.25,1);padding:32px;overflow-y:auto}
+.cart-drawer.open{transform:translateX(0)}
+.cart-overlay{position:fixed;inset:0;z-index:1999;background:oklch(0.14 0.025 215 / 0.7);opacity:0;pointer-events:none;transition:opacity 0.4s}
+.cart-overlay.open{opacity:1;pointer-events:auto}
+.cart-item{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid oklch(0.52 0.08 210 / 0.15);align-items:center}
+.cart-item img{width:56px;height:56px;object-fit:cover;border-radius:4px}
+.cart-item .info{flex:1}
+.cart-item .info .n{font-family:'Clash Display',sans-serif;font-size:14px;font-weight:500}
+.cart-item .info .p{font-size:13px;opacity:0.5;margin-top:2px}
+.cart-qty{display:flex;gap:4px}
+.cart-qty button{width:30px;height:30px;border:1px solid oklch(0.52 0.08 210 / 0.3);border-radius:4px;color:var(--deep-text);display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.2s}
+.cart-qty button:hover{background:var(--water);color:var(--deep)}
+.cart-total-area{margin-top:24px;padding-top:16px;border-top:1px solid oklch(0.52 0.08 210 / 0.3)}
+.cart-total-area .row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;opacity:0.6}
+.cart-total-area .total-row{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:600;padding-top:12px;margin-top:8px;border-top:1px solid var(--water);opacity:1}
+.btn-water{width:100%;padding:16px;background:var(--water);color:var(--deep);font-family:'Clash Display',sans-serif;font-weight:600;font-size:15px;border-radius:8px;margin-top:16px;transition:opacity 0.3s}
+.btn-water:hover{opacity:0.85}
+.checkout-form input,.checkout-form textarea{width:100%;padding:14px 16px;border:1px solid oklch(0.52 0.08 210 / 0.2);border-radius:6px;background:oklch(0.18 0.02 210);color:var(--deep-text);font:inherit;font-size:14px;margin-bottom:12px;outline:none;transition:border-color 0.3s}
+.checkout-form input:focus,.checkout-form textarea:focus{border-color:var(--water)}
+.checkout-form input::placeholder{color:var(--deep-text);opacity:0.3}
+
+/* ─── TIKTOK STUDIO ─── */
+.studio{background:var(--deep);position:relative}
+.phone-mock{width:200px;height:355px;border:3px solid oklch(0.52 0.08 210 / 0.3);border-radius:24px;margin:0 auto;position:relative;overflow:hidden;background:oklch(0.1 0.02 215)}
+.phone-mock .screen{position:absolute;inset:8px;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Clash Display',sans-serif;font-size:14px;text-align:center;color:var(--glacier);opacity:0.5}
+.phone-mock .shimmer{position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,oklch(0.52 0.08 210 / 0.1) 50%,transparent 60%);animation:shimmer 2s infinite;opacity:0}
+.phone-mock.loading .shimmer{opacity:1}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.studio-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:clamp(32px,5vw,80px);align-items:center}
+.studio-controls h3{font-family:'Clash Display',sans-serif;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:600;margin-bottom:24px}
+.studio-controls textarea{width:100%;background:oklch(0.18 0.02 210);border:1px solid oklch(0.52 0.08 210 / 0.2);border-radius:8px;color:var(--deep-text);padding:16px;font:inherit;font-size:14px;resize:vertical;min-height:120px;outline:none;transition:border-color 0.3s}
+.studio-controls textarea:focus{border-color:var(--water)}
+.btn-glow{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--water);color:var(--deep);font-family:'Clash Display',sans-serif;font-weight:600;font-size:15px;border-radius:8px;margin-top:16px;transition:all 0.3s;box-shadow:0 0 0 0 oklch(0.52 0.08 210 / 0.3)}
+.btn-glow:hover{box-shadow:0 0 32px 8px oklch(0.52 0.08 210 / 0.25)}
+
+/* ─── CONTACT ─── */
+.contact{position:relative;overflow:hidden}
+.contact-bg{position:absolute;left:0;top:0;width:50%;height:100%;background:var(--water);clip-path:polygon(0 0,80% 0,60% 100%,0 100%);z-index:0;opacity:0.15}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,80px);position:relative;z-index:1}
+.contact-info h2{font-family:'Clash Display',sans-serif;font-size:clamp(2rem,5vw,4rem);font-weight:600;margin-bottom:32px}
+.contact-info .meta-block{margin-bottom:16px;font-size:15px;opacity:0.65}
+.contact-info .meta-block strong{opacity:1;font-weight:600;display:block;margin-bottom:4px;font-family:'Clash Display',sans-serif;font-size:13px;letter-spacing:0.08em;text-transform:uppercase}
+.contact-form input,.contact-form textarea{width:100%;padding:16px;background:oklch(0.18 0.02 210);border:1px solid oklch(0.52 0.08 210 / 0.15);border-radius:8px;color:var(--deep-text);font:inherit;font-size:15px;margin-bottom:14px;outline:none;transition:border-color 0.3s}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--water)}
+.contact-form textarea{resize:vertical;min-height:140px}
+.contact-form button{padding:16px 40px;background:var(--water);color:var(--deep);font-family:'Clash Display',sans-serif;font-weight:600;font-size:15px;border-radius:8px;transition:opacity 0.3s}
+.contact-form button:hover{opacity:0.85}
+.success-msg{color:var(--sun);font-family:'Clash Display',sans-serif;margin-top:12px;font-size:15px}
+
+/* ─── FOOTER ─── */
+.footer{border-top:1px solid oklch(0.52 0.08 210 / 0.1);padding:48px 0}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+.footer-copy{font-size:13px;opacity:0.4}
+.footer-nav{display:flex;gap:24px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.4}
+.footer-nav a:hover{opacity:1}
+.footer-tag{font-family:'Clash Display',sans-serif;font-size:13px;opacity:0.3}
+
+/* ─── REVEALS ─── */
+.reveal{opacity:0;transform:translateY(40px)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .stones-grid{grid-template-columns:1fr}
+  .studio-grid{grid-template-columns:1fr}
+  .phone-mock{margin-bottom:32px}
+  .contact-grid{grid-template-columns:1fr}
+  .contact-bg{display:none}
+  .boutique-grid{grid-template-columns:1fr 1fr}
+  .callout{display:none}
+}
+@media(max-width:600px){
+  .hero-headline{font-size:clamp(2.5rem,12vw,5rem)}
+  .boutique-grid{grid-template-columns:1fr}
+  .product-tile .add-overlay{opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none}
+  .hero canvas{display:none}
+  .cursor,.cursor-trail{display:none}
+  body{cursor:auto}
+  button{cursor:auto}
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body x-data="shop()" x-init="init()">
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="trail"></div>
+
+<!-- CART BUTTON -->
+<div class="cart-btn" @click="cartOpen=true" :class="{'cart-pulse':cartPulsing}" x-text="cartCount"></div>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" :class="{'open':cartOpen}" @click="cartOpen=false"></div>
+
+<!-- CART DRAWER -->
+<div class="cart-drawer" :class="{'open':cartOpen}">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px">
+    <span class="display" style="font-size:18px;font-weight:600">Votre panier</span>
+    <button @click="cartOpen=false" style="font-size:24px;opacity:0.5">×</button>
+  </div>
+  <template x-if="cart.length===0">
+    <p style="text-align:center;margin-top:64px;font-family:'Clash Display',sans-serif;opacity:0.3">Panier vide</p>
+  </template>
+  <template x-for="item in cart" :key="item.id">
+    <div class="cart-item">
+      <img :src="item.image" :alt="item.name">
+      <div class="info"><div class="n" x-text="item.name"></div><div class="p" x-text="'€'+item.price.toFixed(2)"></div></div>
+      <div class="cart-qty">
+        <button @click="updateQty(item.id,-1)">−</button>
+        <span x-text="item.qty" style="min-width:20px;text-align:center;font-family:'Clash Display',sans-serif;font-weight:600"></span>
+        <button @click="updateQty(item.id,1)">+</button>
+      </div>
+    </div>
+  </template>
+  <template x-if="cart.length>0">
+    <div class="cart-total-area">
+      <div class="row"><span>Sous-total</span><span x-text="'€'+subtotal.toFixed(2)"></span></div>
+      <div class="row"><span>Livraison</span><span x-text="subtotal>=50?'Offerte':'€4,90'"></span></div>
+      <div class="row total-row"><span>Total</span><span x-text="'€'+total.toFixed(2)"></span></div>
+      <template x-if="!showCheckout"><button class="btn-water" @click="showCheckout=true">Commander →</button></template>
+      <template x-if="showCheckout">
+        <div class="checkout-form" style="margin-top:16px">
+          <input type="text" placeholder="Nom" x-model="customer.name" required>
+          <input type="email" placeholder="Email" x-model="customer.email" required>
+          <input type="tel" placeholder="Téléphone" x-model="customer.phone">
+          <input type="text" placeholder="Adresse" x-model="customer.address">
+          <button class="btn-water" @click="placeOrder()" :disabled="orderLoading" x-text="orderLoading?'En cours...':'Confirmer →'"></button>
+          <p x-show="orderMsg" class="success-msg" x-text="orderMsg"></p>
+        </div>
+      </template>
+    </div>
+  </template>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <canvas id="waterCanvas"></canvas>
+  <div class="hero-logo">POWER ECO-DOUCHE</div>
+  <nav class="hero-nav">
+    <a href="#boutique">BOUTIQUE</a>
+    <a href="#pierres">PIERRES</a>
+    <a href="#contact">CONTACT</a>
+  </nav>
+  <div class="hero-content pad-x">
+    <h1 class="hero-headline">
+      <span class="word"><span>Buvez</span></span> <span class="word"><span>la</span></span><br>
+      <span class="word"><span>différence.</span></span>
+    </h1>
+    <p class="hero-sub">50% d'eau. 100% nature. Fabriqué en France.</p>
+  </div>
+  <div class="hero-scroll">
+    <span class="meta" style="opacity:0.5">Défilez pour plonger</span>
+    <div class="line"></div>
+  </div>
+</section>
+
+<!-- VOYAGE — Scroll layers -->
+<section class="voyage">
+  <div class="voyage-layer reveal" style="background:oklch(0.2 0.03 215)">
+    <div class="word">Design</div>
+    <p class="desc">Un objet pensé pour sublimer votre salle de bain, pas seulement la fonctionnalité.</p>
+  </div>
+  <div class="voyage-layer reveal" style="background:oklch(0.32 0.05 210)">
+    <div class="word">Écologie</div>
+    <p class="desc">50% d'économie d'eau grâce aux micro-trous coniques et pierres naturelles.</p>
+  </div>
+  <div class="voyage-layer reveal" style="background:oklch(0.45 0.06 200)">
+    <div class="word" style="color:oklch(0.15 0.02 210)">Économie</div>
+    <p class="desc" style="color:oklch(0.15 0.02 210)">Moins d'eau consommée, moins de factures. Un investissement de €29,90 qui se rembourse.</p>
+  </div>
+</section>
+
+<!-- PIERRES — 3D Flip Cards -->
+<section class="pad-x pad-y" id="pierres" style="background:var(--deep)">
+  <div class="max-w">
+    <div class="meta reveal" style="opacity:0.5;margin-bottom:32px">LES TROIS PIERRES</div>
+    <h2 class="display reveal" style="font-size:clamp(2rem,5vw,4rem);font-weight:600;margin-bottom:48px">La nature, concentrée.</h2>
+    <div class="stones-grid">
+      <div class="stone-card reveal" @click="$el.classList.toggle('flipped')">
+        <div class="stone-inner">
+          <div class="stone-front">
+            <img src="../img/POWER_ECO_DOUCHE_TOURMALINE.jpg" alt="Tourmaline" loading="lazy">
+            <div class="label"><h3>Tourmaline</h3><div class="sub">Équilibre</div></div>
+          </div>
+          <div class="stone-back">
+            <h3>Tourmaline</h3>
+            <p>Pierre semi-précieuse qui apaise la peau, favorise la relaxation et un meilleur sommeil. Ses propriétés ioniques transforment l'eau en soin quotidien.</p>
+            <div class="close-hint">Cliquez pour fermer</div>
+          </div>
+        </div>
+      </div>
+      <div class="stone-card reveal" @click="$el.classList.toggle('flipped')">
+        <div class="stone-inner">
+          <div class="stone-front">
+            <img src="../img/POWER_ECO_DOUCHE_GERMANIUM.jpg" alt="Germanium" loading="lazy">
+            <div class="label"><h3>Germanium</h3><div class="sub">Purification</div></div>
+          </div>
+          <div class="stone-back">
+            <h3>Germanium</h3>
+            <p>Métalloïde rare qui neutralise le calcaire, le chlore et les métaux lourds présents dans l'eau du robinet. Votre peau retrouve son éclat naturel.</p>
+            <div class="close-hint">Cliquez pour fermer</div>
+          </div>
+        </div>
+      </div>
+      <div class="stone-card reveal" @click="$el.classList.toggle('flipped')">
+        <div class="stone-inner">
+          <div class="stone-front">
+            <img src="../img/POWER_ECO_DOUCHE_ARGILE_GRISE.jpg" alt="Argile grise" loading="lazy">
+            <div class="label"><h3>Argile grise</h3><div class="sub">Régénération</div></div>
+          </div>
+          <div class="stone-back">
+            <h3>Argile grise</h3>
+            <p>Fine et pure, l'argile grise nettoie l'eau en profondeur. Elle restructure et clarifie, offrant une sensation de pureté incomparable à chaque douche.</p>
+            <div class="close-hint">Cliquez pour fermer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT REVEAL -->
+<section class="product-section pad-x pad-y" style="background:oklch(0.18 0.02 210)">
+  <div class="max-w" style="position:relative">
+    <div class="meta reveal" style="text-align:center;opacity:0.5;margin-bottom:48px">L'OBJET</div>
+    <div class="product-hero-img reveal">
+      <img src="../img/DOUCHETTE_DUO_POWER_ECO_DOUCHE.jpg" alt="Douchette" loading="lazy">
+      <div class="product-callouts">
+        <div class="callout callout-1"><span class="dot"></span><span class="line"></span>Micro-trous coniques</div>
+        <div class="callout callout-2">Billes naturelles<span class="line"></span><span class="dot"></span></div>
+        <div class="callout callout-3"><span class="dot"></span><span class="line"></span>Raccord universel</div>
+      </div>
+    </div>
+    <div class="product-price reveal">
+      <div style="font-size:14px;opacity:0.5;margin-bottom:8px">À partir de</div>
+      <span class="amt" x-data="{val:0}" x-init="gsap.to($data,{val:29.90,duration:1.5,ease:'power3.out',onUpdate:()=>$el.querySelector('.v').textContent=val.toFixed(2)})" ><span class="v">0.00</span></span>
+      <span class="eur">€</span>
+      <div style="margin-top:16px">
+        <button class="btn-glow" @click="addToCart(products.find(p=>p.id===1))">Ajouter au panier →</button>
+      </div>
+      <div style="font-size:13px;opacity:0.4;margin-top:12px">Livraison offerte dès €50</div>
+    </div>
+  </div>
+</section>
+
+<!-- BOUTIQUE -->
+<section class="pad-x pad-y" id="boutique" style="background:var(--deep)">
+  <div class="max-w">
+    <div class="meta reveal" style="opacity:0.5;margin-bottom:32px">BOUTIQUE</div>
+    <h2 class="display reveal" style="font-size:clamp(2rem,5vw,4rem);font-weight:600;margin-bottom:48px">Nos produits</h2>
+    <div class="boutique-grid">
+      <template x-for="p in products" :key="p.id">
+        <div class="product-tile reveal" @click="addToCart(p)">
+          <img :src="p.image" :alt="p.name" loading="lazy">
+          <div class="info">
+            <div class="n" x-text="p.name"></div>
+            <div class="p" x-text="'€'+p.price.toFixed(2)"></div>
+          </div>
+          <div class="add-overlay">+ Ajouter au panier</div>
+        </div>
+      </template>
+    </div>
+  </div>
+</section>
+
+<!-- TIKTOK STUDIO -->
+<section class="studio pad-x pad-y">
+  <div class="max-w">
+    <div class="meta reveal" style="opacity:0.5;margin-bottom:32px">STUDIO SOCIAL</div>
+    <div class="studio-grid">
+      <div style="display:flex;flex-direction:column;align-items:center" class="reveal">
+        <div class="phone-mock" :class="{'loading':heygenLoading}">
+          <div class="screen" x-text="heygenLoading ? 'Génération en cours...' : '9:16 Vidéo TikTok'"></div>
+          <div class="shimmer"></div>
+        </div>
+        <div style="display:flex;gap:24px;margin-top:24px">
+          <template x-for="v in videos" :key="v.id">
+            <div style="width:50px;height:88px;overflow:hidden;border:1px solid oklch(0.52 0.08 210 / 0.2);border-radius:6px">
+              <img :src="v.thumbnail" :alt="v.caption" style="width:100%;height:100%;object-fit:cover;opacity:0.6">
+            </div>
+          </template>
+        </div>
+      </div>
+      <div class="studio-controls reveal">
+        <h3>Générez du contenu viral</h3>
+        <p style="opacity:0.5;margin-bottom:24px;font-size:15px">Écrivez un script et notre IA crée une vidéo prête pour TikTok et Instagram Reels.</p>
+        <textarea x-model="heygenScript" placeholder="Saviez-vous que cette douchette française économise 50% d'eau ? Découvrez Power Eco-Douche..."></textarea>
+        <button class="btn-glow" @click="generateVideo()" :disabled="heygenLoading">
+          <span x-text="heygenLoading ? 'Génération...' : '✨ Générer avec IA'"></span>
+        </button>
+        <p x-show="heygenMsg" style="margin-top:12px;font-size:13px;opacity:0.6" x-text="heygenMsg"></p>
+        <div style="margin-top:40px;display:flex;gap:32px">
+          <a href="https://www.facebook.com/powerecodouche" target="_blank" class="meta" style="opacity:0.5;transition:opacity 0.3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Facebook ↗</a>
+          <a href="https://www.instagram.com/powerecodouche_" target="_blank" class="meta" style="opacity:0.5;transition:opacity 0.3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Instagram ↗</a>
+          <a href="https://www.linkedin.com/company/powerecodouche/" target="_blank" class="meta" style="opacity:0.5;transition:opacity 0.3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSEILS -->
+<section class="pad-x pad-y" style="background:oklch(0.18 0.02 210)">
+  <div class="max-w">
+    <div class="meta reveal" style="opacity:0.5;margin-bottom:32px">CONSEILS</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,80px)">
+      <div class="reveal">
+        <h3 class="display" style="font-size:clamp(1.3rem,2vw,1.8rem);font-weight:600;margin-bottom:20px">Nettoyage de la grille</h3>
+        <p style="opacity:0.6;font-size:15px;line-height:1.7">Après 6 mois, démontez et rincez la grille centrale sous l'eau tiède. L'entretien est simple et rapide grâce au système de démontage facile.</p>
+      </div>
+      <div class="reveal">
+        <h3 class="display" style="font-size:clamp(1.3rem,2vw,1.8rem);font-weight:600;margin-bottom:20px">Recharge des pierres</h3>
+        <p style="opacity:0.6;font-size:15px;line-height:1.7">Tous les 2 ans, retirez le bouchon silicone, videz les pierres usées et remplacez par un sachet de recharge neuf. La durée varie selon la dureté du calcaire.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact pad-x pad-y" id="contact" style="background:var(--deep)">
+  <div class="contact-bg"></div>
+  <div class="max-w">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h2>Une question ?<br>Plongez.</h2>
+        <div class="meta-block"><strong>Téléphone</strong>+33 6 13 24 23 72</div>
+        <div class="meta-block"><strong>Email</strong>info@powerecodouche.com</div>
+        <div class="meta-block"><strong>Horaires</strong>Lundi, mardi, jeudi, vendredi — 14h à 18h</div>
+      </div>
+      <form class="contact-form reveal" @submit.prevent="sendContact()">
+        <input type="text" placeholder="Votre nom" x-model="contactForm.name" required>
+        <input type="email" placeholder="Votre email" x-model="contactForm.email" required>
+        <textarea placeholder="Votre message" x-model="contactForm.message" required></textarea>
+        <button type="submit" :disabled="contactLoading" x-text="contactLoading?'Envoi...':'Envoyer →'"></button>
+        <p x-show="contactMsg" class="success-msg" x-text="contactMsg"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer pad-x">
+  <div class="max-w footer-inner">
+    <div class="footer-copy">
+      <img src="../img/Logo_Power_Eco_Douche_footer.png" alt="Logo" style="height:24px;opacity:0.4;margin-bottom:6px" loading="lazy"><br>
+      © 2026 Power Eco-Douche
+    </div>
+    <div class="footer-nav">
+      <a href="#">Accueil</a><a href="#boutique">Boutique</a><a href="#pierres">Pierres</a><a href="#contact">Contact</a>
+    </div>
+    <div class="footer-tag">Fait en France avec ♥</div>
+  </div>
+</footer>
+
+<script>
+function shop(){return{
+  products:[],cart:[],cartOpen:false,cartPulsing:false,showCheckout:false,videos:[],
+  customer:{name:'',email:'',phone:'',address:''},
+  orderLoading:false,orderMsg:'',
+  contactForm:{name:'',email:'',message:''},contactLoading:false,contactMsg:'',
+  heygenScript:'',heygenLoading:false,heygenMsg:'',
+  get cartCount(){return this.cart.reduce((s,i)=>s+i.qty,0)},
+  get subtotal(){return this.cart.reduce((s,i)=>s+i.price*i.qty,0)},
+  get total(){return this.subtotal+(this.subtotal>=50?0:4.90)},
+  async init(){
+    const saved=localStorage.getItem('ecodouche-cart-v3');
+    if(saved)try{this.cart=JSON.parse(saved)}catch(e){}
+    try{const r=await fetch('/api/ecodouche/products');const d=await r.json();this.products=d.products||[]}catch(e){}
+    try{const r=await fetch('/api/ecodouche/social/videos');const d=await r.json();this.videos=d.videos||[]}catch(e){}
+    this.$watch('cart',()=>localStorage.setItem('ecodouche-cart-v3',JSON.stringify(this.cart)),{deep:true});
+  },
+  addToCart(p){
+    if(!p)return;
+    const x=this.cart.find(i=>i.id===p.id);
+    if(x)x.qty++;else this.cart.push({id:p.id,name:p.name,price:p.price,image:p.image,qty:1});
+    this.cartPulsing=true;setTimeout(()=>this.cartPulsing=false,500);
+  },
+  updateQty(id,d){const i=this.cart.find(x=>x.id===id);if(!i)return;i.qty+=d;if(i.qty<=0)this.cart=this.cart.filter(x=>x.id!==id)},
+  async placeOrder(){
+    if(!this.customer.name||!this.customer.email)return;
+    this.orderLoading=true;this.orderMsg='';
+    try{const r=await fetch('/api/ecodouche/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customer:this.customer,items:this.cart.map(i=>({id:i.id,qty:i.qty}))})});const d=await r.json();if(d.ok){this.orderMsg='Merci ! Commande '+d.order.id;this.cart=[];this.showCheckout=false}else this.orderMsg=d.error||'Erreur'}catch(e){this.orderMsg='Erreur réseau'}
+    this.orderLoading=false;
+  },
+  async sendContact(){
+    if(!this.contactForm.name||!this.contactForm.email||!this.contactForm.message)return;
+    this.contactLoading=true;this.contactMsg='';
+    try{const r=await fetch('/api/ecodouche/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(this.contactForm)});const d=await r.json();this.contactMsg=d.message||'Envoyé !';if(d.ok)this.contactForm={name:'',email:'',message:''}}catch(e){this.contactMsg='Erreur réseau'}
+    this.contactLoading=false;
+  },
+  async generateVideo(){
+    if(!this.heygenScript||this.heygenScript.length<10)return;
+    this.heygenLoading=true;this.heygenMsg='';
+    try{const r=await fetch('/api/ecodouche/heygen/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({script:this.heygenScript})});const d=await r.json();this.heygenMsg=d.message||'En attente'}catch(e){this.heygenMsg='Erreur réseau'}
+    this.heygenLoading=false;
+  }
+}}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(prefersReduced){
+    document.querySelectorAll('.reveal').forEach(el=>{el.style.opacity=1;el.style.transform='none'});
+    return;
+  }
+
+  // ─── WATER CANVAS ───
+  const canvas=document.getElementById('waterCanvas');
+  const ctx=canvas.getContext('2d');
+  let W,H;
+  const ripples=[];
+  function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight}
+  resize();
+  window.addEventListener('resize',resize);
+
+  class Ripple{
+    constructor(x,y){this.x=x;this.y=y;this.r=0;this.maxR=Math.random()*200+100;this.alpha=0.4;this.speed=2+Math.random()*2}
+    update(){this.r+=this.speed;this.alpha=0.4*(1-this.r/this.maxR);return this.r<this.maxR}
+    draw(){
+      const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.r);
+      g.addColorStop(0,`rgba(82,160,200,0)`);
+      g.addColorStop(0.6,`rgba(82,160,200,${this.alpha*0.3})`);
+      g.addColorStop(0.8,`rgba(82,160,200,${this.alpha})`);
+      g.addColorStop(1,`rgba(82,160,200,0)`);
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fill();
+    }
+  }
+
+  const heroEl=document.getElementById('hero');
+  heroEl.addEventListener('mousemove',e=>{
+    const rect=heroEl.getBoundingClientRect();
+    ripples.push(new Ripple(e.clientX-rect.left,e.clientY-rect.top));
+  });
+
+  // Auto-ripples
+  setInterval(()=>{
+    if(ripples.length<20){
+      ripples.push(new Ripple(Math.random()*W,Math.random()*H));
+    }
+  },800);
+
+  let frameCount=0;
+  function animate(){
+    frameCount++;
+    if(frameCount%2===0){
+      ctx.clearRect(0,0,W,H);
+      for(let i=ripples.length-1;i>=0;i--){
+        if(!ripples[i].update())ripples.splice(i,1);
+        else ripples[i].draw();
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // ─── CUSTOM CURSOR ───
+  const cursor=document.getElementById('cursor');
+  const trail=document.getElementById('trail');
+  let mx=0,my=0,cx=0,cy=0,tx=0,ty=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+  document.querySelectorAll('a,button,.product-tile,.stone-card,.cat-row').forEach(el=>{
+    el.addEventListener('mouseenter',()=>cursor.classList.add('hovering'));
+    el.addEventListener('mouseleave',()=>cursor.classList.remove('hovering'));
+  });
+  function cursorLoop(){
+    cx+=(mx-cx)*0.15;cy+=(my-cy)*0.15;
+    tx+=(mx-tx)*0.08;ty+=(my-ty)*0.08;
+    cursor.style.left=cx+'px';cursor.style.top=cy+'px';
+    trail.style.left=tx+'px';trail.style.top=ty+'px';
+    requestAnimationFrame(cursorLoop);
+  }
+  cursorLoop();
+
+  // ─── LENIS + GSAP ───
+  const lenis=new Lenis({duration:1.4,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t))});
+  function raf(time){lenis.raf(time);requestAnimationFrame(raf)}
+  requestAnimationFrame(raf);
+  gsap.registerPlugin(ScrollTrigger);
+  lenis.on('scroll',ScrollTrigger.update);
+  gsap.ticker.add(time=>lenis.raf(time*1000));
+  gsap.ticker.lagSmoothing(0);
+
+  // Hero animation
+  gsap.fromTo('.hero-headline .word span',{opacity:0,y:80},{opacity:1,y:0,duration:1.2,stagger:0.08,ease:'power4.out',delay:0.3});
+  gsap.to('.hero-sub',{opacity:1,duration:0.8,delay:1.2,ease:'power3.out'});
+
+  // Callouts
+  gsap.to('.callout',{opacity:1,duration:0.6,stagger:0.2,scrollTrigger:{trigger:'.product-section',start:'top 40%'}});
+
+  // Reveals
+  gsap.utils.toArray('.reveal').forEach(el=>{
+    gsap.fromTo(el,{opacity:0,y:40},{opacity:1,y:0,duration:0.9,ease:'power3.out',
+      scrollTrigger:{trigger:el,start:'top 88%'}
+    });
+  });
+});
+</script>
+</body>
+</html>

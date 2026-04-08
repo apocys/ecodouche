@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POWER ECO-DOUCHE — L'eau, simplement réinventée</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<style>
+:root{
+  --ink:oklch(0.18 0.015 60);
+  --paper:oklch(0.97 0.012 85);
+  --stone:oklch(0.88 0.015 75);
+  --water:oklch(0.52 0.08 210);
+  --moss:oklch(0.42 0.055 145);
+  --gold:oklch(0.72 0.12 75);
+  --r:0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+body{background:var(--paper);color:var(--ink);font-family:'Instrument Sans',sans-serif;font-size:17px;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+::selection{background:var(--moss);color:var(--paper)}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
+
+/* GRAIN OVERLAY */
+body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.028;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px}
+
+/* TYPOGRAPHY */
+.serif{font-family:'Fraunces',serif;font-optical-sizing:auto}
+.sans{font-family:'Instrument Sans',sans-serif}
+.hero-type{font-family:'Fraunces',serif;font-size:clamp(3.5rem,11vw,13rem);font-weight:400;letter-spacing:-0.04em;line-height:0.88}
+.subhead{font-family:'Instrument Sans',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;color:var(--moss)}
+.chapter-num{font-family:'Fraunces',serif;font-size:clamp(1rem,2vw,1.4rem);font-weight:300;color:var(--gold)}
+.pull-quote{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(1.5rem,3.5vw,3rem);line-height:1.2;color:var(--moss)}
+
+/* UNDERLINE LINKS */
+.link-draw{position:relative;display:inline-block}
+.link-draw::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--ink);transition:width 0.4s cubic-bezier(.25,.1,.25,1)}
+.link-draw:hover::after{width:100%}
+
+/* GOLD DIVIDER */
+.gold-rule{height:1px;background:var(--gold);opacity:0.4}
+.gold-rule-v{width:1px;background:var(--gold);opacity:0.4;align-self:stretch}
+
+/* LAYOUT */
+.pad-x{padding-left:clamp(24px,5vw,80px);padding-right:clamp(24px,5vw,80px)}
+.pad-section{padding-top:clamp(80px,12vw,160px);padding-bottom:clamp(80px,12vw,160px)}
+.max-w{max-width:1400px;margin:0 auto}
+
+/* ─── HERO ─── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative}
+.hero-grid{display:grid;grid-template-columns:2fr 3fr;gap:clamp(32px,5vw,80px);align-items:end}
+.hero-masthead{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;line-height:2.2;color:var(--moss);opacity:0.7}
+.hero-cta{margin-top:48px;font-size:13px;letter-spacing:0.12em;color:var(--moss)}
+.hero-cta .arrow{display:inline-block;transition:transform 0.3s}
+.hero-cta:hover .arrow{transform:translateX(6px)}
+.hero-ticker{position:absolute;left:clamp(16px,3vw,48px);top:50%;transform:rotate(-90deg) translateX(-50%);transform-origin:0 0;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);white-space:nowrap;opacity:0.5}
+
+/* ─── MANIFESTE ─── */
+.manifeste{position:relative}
+.drop-cap{float:left;font-family:'Fraunces',serif;font-style:italic;font-size:clamp(6rem,12vw,12rem);line-height:0.75;margin-right:16px;margin-top:8px;color:var(--moss)}
+.manifeste-text{max-width:62ch;font-size:17px;line-height:1.7}
+.manifeste-img{position:absolute;right:clamp(24px,5vw,80px);top:20%;width:clamp(160px,20vw,320px);opacity:0.85;mix-blend-mode:multiply}
+
+/* ─── PIERRES ─── */
+.pierres-grid{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:start}
+.pierre-card{padding:clamp(24px,3vw,48px)}
+.pierre-num{font-family:'Fraunces',serif;font-size:clamp(2rem,4vw,4rem);font-weight:300;color:var(--gold);margin-bottom:16px}
+.pierre-img{width:100%;aspect-ratio:1;object-fit:cover;margin-bottom:24px;filter:saturate(0.85)}
+.pierre-name{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(1.2rem,2vw,1.8rem);margin-bottom:8px}
+.pierre-desc{font-size:14px;line-height:1.6;color:var(--ink);opacity:0.65;max-width:30ch}
+.pierre-footer{text-align:center;margin-top:clamp(32px,5vw,64px);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--moss);opacity:0.6}
+
+/* ─── OBJET ─── */
+.objet-grid{display:grid;grid-template-columns:3fr 2fr;gap:clamp(32px,5vw,80px);align-items:center}
+.objet-img{width:100%;max-height:70vh;object-fit:contain}
+.objet-specs{list-style:none}
+.objet-specs li{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--gold);opacity:0.4;font-size:15px}
+.objet-specs li .label{font-family:'Instrument Sans',sans-serif;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;font-size:11px;color:var(--moss)}
+.objet-specs li .val{font-family:'Fraunces',serif;font-style:italic;font-size:16px}
+.objet-price{font-family:'Fraunces',serif;font-size:clamp(1.5rem,3vw,2.5rem);margin-top:32px}
+.objet-price small{font-family:'Instrument Sans',sans-serif;font-size:13px;letter-spacing:0.08em;color:var(--moss);display:block;margin-top:4px}
+
+/* ─── BOUTIQUE ─── */
+.boutique-row{display:grid;grid-template-columns:80px 1fr 2fr auto auto;gap:16px;align-items:center;padding:18px 0;border-bottom:1px solid oklch(0.72 0.12 75 / 0.2);transition:background 0.3s,padding 0.3s;cursor:pointer}
+.boutique-row:hover{background:var(--stone);padding-left:12px;padding-right:12px;border-radius:4px}
+.boutique-row .thumb{width:80px;height:80px;object-fit:cover;border-radius:2px}
+.boutique-row .name{font-family:'Fraunces',serif;font-style:italic;font-size:16px}
+.boutique-row .desc{font-size:13px;color:var(--ink);opacity:0.5;max-width:28ch}
+.boutique-row .price{font-family:'Fraunces',serif;font-size:20px;white-space:nowrap}
+.boutique-row .add-btn{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;padding:10px 20px;border:1px solid var(--ink);transition:all 0.3s;white-space:nowrap}
+.boutique-row .add-btn:hover{background:var(--ink);color:var(--paper)}
+
+/* ─── CART ─── */
+.cart-icon{position:fixed;top:32px;right:clamp(24px,5vw,80px);z-index:1000;width:40px;height:40px;border-radius:50%;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:14px;cursor:pointer;transition:transform 0.3s;box-shadow:0 4px 20px oklch(0 0 0 / 0.12)}
+.cart-icon:hover{transform:scale(1.08)}
+.cart-bounce{animation:cartBounce 0.4s ease}
+@keyframes cartBounce{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
+.cart-drawer{position:fixed;top:0;right:0;width:min(420px,90vw);height:100vh;background:var(--paper);z-index:2000;transform:translateX(100%);transition:transform 0.5s cubic-bezier(.25,.1,.25,1);padding:clamp(24px,4vw,48px);overflow-y:auto;box-shadow:-8px 0 40px oklch(0 0 0 / 0.08)}
+.cart-drawer.open{transform:translateX(0)}
+.cart-overlay{position:fixed;inset:0;z-index:1999;background:oklch(0 0 0 / 0.3);opacity:0;pointer-events:none;transition:opacity 0.4s}
+.cart-overlay.open{opacity:1;pointer-events:auto}
+.cart-item{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid oklch(0.72 0.12 75 / 0.2);align-items:center}
+.cart-item img{width:60px;height:60px;object-fit:cover;border-radius:2px}
+.cart-item .info{flex:1}
+.cart-item .info .n{font-family:'Fraunces',serif;font-style:italic;font-size:15px}
+.cart-item .info .p{font-size:13px;color:var(--moss);margin-top:2px}
+.cart-qty{display:flex;align-items:center;gap:8px}
+.cart-qty button{width:28px;height:28px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:14px;transition:background 0.2s}
+.cart-qty button:hover{background:var(--ink);color:var(--paper)}
+.checkout-btn{width:100%;padding:16px;background:var(--ink);color:var(--paper);font-family:'Fraunces',serif;font-size:16px;margin-top:24px;letter-spacing:0.04em;transition:opacity 0.3s}
+.checkout-btn:hover{opacity:0.85}
+.checkout-form input,.checkout-form textarea{width:100%;padding:12px 0;border:none;border-bottom:1px solid oklch(0.72 0.12 75 / 0.3);background:transparent;font:inherit;font-size:15px;margin-bottom:16px;outline:none;transition:border-color 0.3s}
+.checkout-form input:focus,.checkout-form textarea:focus{border-color:var(--moss)}
+.checkout-form input::placeholder,.checkout-form textarea::placeholder{color:var(--ink);opacity:0.35}
+
+/* ─── SOCIAL ─── */
+.social-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,80px);align-items:start}
+.video-tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.video-tile{aspect-ratio:9/16;background:var(--stone);border-radius:4px;overflow:hidden;position:relative;cursor:pointer;transition:transform 0.3s}
+.video-tile:hover{transform:translateY(-4px)}
+.video-tile img{width:100%;height:100%;object-fit:cover}
+.video-tile .tag{position:absolute;bottom:8px;left:8px;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:4px 8px;border-radius:2px}
+.heygen-area textarea{width:100%;border:1px solid oklch(0.72 0.12 75 / 0.3);background:transparent;padding:16px;font:inherit;font-size:14px;resize:vertical;min-height:100px;border-radius:2px;outline:none;transition:border-color 0.3s}
+.heygen-area textarea:focus{border-color:var(--moss)}
+.heygen-btn{margin-top:12px;padding:12px 32px;border:1px solid var(--ink);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.3s}
+.heygen-btn:hover{background:var(--ink);color:var(--paper)}
+.social-links{margin-top:32px;display:flex;gap:24px;font-size:13px;letter-spacing:0.1em}
+
+/* ─── CONSEILS ─── */
+.conseils-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px)}
+.conseil h3{font-family:'Fraunces',serif;font-size:clamp(1.2rem,2vw,1.6rem);margin-bottom:16px;font-weight:400}
+.conseil p{font-size:15px;line-height:1.7;opacity:0.7;max-width:45ch}
+.conseils-bg{position:relative}
+.conseils-bg::before{content:'';position:absolute;right:-10%;top:-20%;width:50%;height:140%;background:url('../img/product-3.png') center/cover no-repeat;opacity:0.06;pointer-events:none}
+
+/* ─── CONTACT ─── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px)}
+.contact-info .big{font-family:'Fraunces',serif;font-size:clamp(1.5rem,3vw,2.5rem);margin-bottom:32px;font-weight:400}
+.contact-info .meta{font-size:14px;line-height:2.2;opacity:0.6}
+.contact-form input,.contact-form textarea{width:100%;padding:14px 0;border:none;border-bottom:1px solid oklch(0.72 0.12 75 / 0.3);background:transparent;font:inherit;font-size:15px;margin-bottom:20px;outline:none;transition:border-color 0.3s}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--moss)}
+.contact-form textarea{resize:vertical;min-height:120px}
+.contact-form button{padding:14px 40px;border:1px solid var(--ink);font-size:12px;letter-spacing:0.12em;text-transform:uppercase;transition:all 0.3s;background:transparent}
+.contact-form button:hover{background:var(--ink);color:var(--paper)}
+.contact-success{color:var(--moss);font-family:'Fraunces',serif;font-style:italic}
+
+/* ─── FOOTER ─── */
+.footer{border-top:1px solid oklch(0.72 0.12 75 / 0.2);padding:48px 0}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+.footer-copy{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.4}
+.footer-links{display:flex;gap:24px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.5}
+.footer-links a:hover{opacity:1}
+.footer-badges{display:flex;gap:12px;align-items:center;opacity:0.35;font-size:11px;letter-spacing:0.08em;text-transform:uppercase}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(40px)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr;gap:32px}
+  .hero-ticker{display:none}
+  .objet-grid{grid-template-columns:1fr}
+  .pierres-grid{grid-template-columns:1fr;gap:0}
+  .gold-rule-v{display:none}
+  .boutique-row{grid-template-columns:60px 1fr auto;gap:10px}
+  .boutique-row .desc{display:none}
+  .boutique-row .thumb{width:60px;height:60px}
+  .social-grid{grid-template-columns:1fr}
+  .conseils-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .manifeste-img{position:relative;right:auto;top:auto;width:100%;margin-top:32px;margin-bottom:32px}
+}
+@media(max-width:600px){
+  .hero-type{font-size:clamp(2.5rem,14vw,4.5rem)}
+  .boutique-row .add-btn{padding:8px 12px;font-size:10px}
+  .video-tiles{grid-template-columns:1fr 1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none}
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body x-data="shop()" x-init="init()">
+
+<!-- CART ICON -->
+<div class="cart-icon" @click="cartOpen=true" :class="{'cart-bounce':cartBouncing}" x-text="cartCount"></div>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" :class="{'open':cartOpen}" @click="cartOpen=false"></div>
+
+<!-- CART DRAWER -->
+<div class="cart-drawer" :class="{'open':cartOpen}">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px">
+    <span class="subhead" style="font-size:13px">Votre sélection</span>
+    <button @click="cartOpen=false" style="font-size:24px;opacity:0.4">×</button>
+  </div>
+  <template x-if="cart.length===0">
+    <p style="font-family:'Fraunces',serif;font-style:italic;opacity:0.5;margin-top:48px;text-align:center">Votre panier est vide.</p>
+  </template>
+  <template x-for="item in cart" :key="item.id">
+    <div class="cart-item">
+      <img :src="item.image" :alt="item.name">
+      <div class="info">
+        <div class="n" x-text="item.name"></div>
+        <div class="p" x-text="'€' + item.price.toFixed(2)"></div>
+      </div>
+      <div class="cart-qty">
+        <button @click="updateQty(item.id,-1)">−</button>
+        <span x-text="item.qty" style="font-family:'Fraunces',serif;min-width:20px;text-align:center"></span>
+        <button @click="updateQty(item.id,1)">+</button>
+      </div>
+    </div>
+  </template>
+  <template x-if="cart.length>0">
+    <div>
+      <div style="display:flex;justify-content:space-between;margin-top:24px;padding-top:16px;border-top:1px solid oklch(0.72 0.12 75 / 0.2)">
+        <span class="subhead">Sous-total</span>
+        <span class="serif" style="font-size:18px" x-text="'€' + subtotal.toFixed(2)"></span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px">
+        <span class="subhead">Livraison</span>
+        <span class="serif" style="font-size:14px;font-style:italic" x-text="subtotal>=50 ? 'Offerte' : '€4,90'"></span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--ink)">
+        <span style="font-family:'Fraunces',serif;font-size:18px">Total</span>
+        <span style="font-family:'Fraunces',serif;font-size:22px" x-text="'€' + total.toFixed(2)"></span>
+      </div>
+      <template x-if="!showCheckout">
+        <button class="checkout-btn" @click="showCheckout=true">Commander →</button>
+      </template>
+      <template x-if="showCheckout">
+        <div class="checkout-form" style="margin-top:24px">
+          <input type="text" placeholder="Nom complet" x-model="customer.name" required>
+          <input type="email" placeholder="Email" x-model="customer.email" required>
+          <input type="tel" placeholder="Téléphone" x-model="customer.phone">
+          <input type="text" placeholder="Adresse de livraison" x-model="customer.address">
+          <button class="checkout-btn" @click="placeOrder()" x-text="orderLoading ? 'En cours...' : 'Confirmer la commande →'" :disabled="orderLoading"></button>
+          <p x-show="orderMsg" class="contact-success" style="margin-top:12px" x-text="orderMsg"></p>
+        </div>
+      </template>
+    </div>
+  </template>
+</div>
+
+<!-- HERO -->
+<section class="hero pad-x">
+  <div class="hero-ticker">TOURMALINE · GERMANIUM · ARGILE GRISE · ECO · FRANCE · 2026</div>
+  <div class="hero-grid max-w">
+    <div class="hero-masthead reveal">
+      POWER ECO-DOUCHE<br>
+      Est. France<br>
+      Douchette Géothermale
+    </div>
+    <div>
+      <h1 class="hero-type reveal">L'eau,<br>simplement<br>réinventée.</h1>
+      <p style="margin-top:24px;font-size:15px;opacity:0.6;max-width:40ch" class="reveal">Une douchette géothermale française qui économise 50% d'eau grâce aux pierres naturelles.</p>
+      <a href="#manifeste" class="hero-cta link-draw reveal">Découvrir — 01 <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 01 — MANIFESTE -->
+<section id="manifeste" class="pad-x pad-section manifeste">
+  <div class="max-w">
+    <div class="chapter-num reveal">01 — Manifeste</div>
+    <div class="gold-rule" style="margin:16px 0 48px"></div>
+    <div class="manifeste-text reveal" style="position:relative">
+      <span class="drop-cap">P</span>ower Eco-Douche est une entreprise française qui commercialise une douchette innovante géothermale, écologique et économique. Grâce à la technologie de ses buses coniques et des billes de pierres naturelles intégrées — germanium, tourmaline et argile grise — dans sa poignée, elle offre d'agréables instants tout en permettant d'économiser jusqu'à 50% d'eau. Destinée aux particuliers comme aux professionnels, elle transforme chaque douche en un rituel de bien-être.
+    </div>
+    <img src="../img/product-1.png" alt="Douchette Power Eco-Douche" class="manifeste-img reveal" loading="lazy">
+    <blockquote class="pull-quote reveal" style="margin-top:64px;max-width:50ch">
+      « Design, écologique<br>& économique. »
+    </blockquote>
+  </div>
+</section>
+
+<!-- 02 — LES PIERRES -->
+<section class="pad-x pad-section" style="background:var(--stone)">
+  <div class="max-w">
+    <div class="chapter-num reveal">02 — Les Pierres</div>
+    <div class="gold-rule" style="margin:16px 0 48px"></div>
+    <div class="pierres-grid">
+      <div class="pierre-card reveal">
+        <div class="pierre-num">I.</div>
+        <img src="../img/POWER_ECO_DOUCHE_TOURMALINE.jpg" alt="Tourmaline" class="pierre-img" loading="lazy">
+        <div class="pierre-name">Tourmaline</div>
+        <p class="pierre-desc">Apaise la peau, favorise la relaxation et un meilleur sommeil. Pierre de l'équilibre.</p>
+      </div>
+      <div class="gold-rule-v"></div>
+      <div class="pierre-card reveal">
+        <div class="pierre-num">II.</div>
+        <img src="../img/POWER_ECO_DOUCHE_GERMANIUM.jpg" alt="Germanium" class="pierre-img" loading="lazy">
+        <div class="pierre-name">Germanium</div>
+        <p class="pierre-desc">Neutralise le calcaire, le chlore et les métaux lourds. Agent purifiant naturel.</p>
+      </div>
+      <div class="gold-rule-v"></div>
+      <div class="pierre-card reveal">
+        <div class="pierre-num">III.</div>
+        <img src="../img/POWER_ECO_DOUCHE_ARGILE_GRISE.jpg" alt="Argile grise" class="pierre-img" loading="lazy">
+        <div class="pierre-name">Argile grise</div>
+        <p class="pierre-desc">Fine et pure, elle nettoie l'eau en profondeur. Restructure et clarifie.</p>
+      </div>
+    </div>
+    <p class="pierre-footer reveal">100% naturel · 0% chimie</p>
+  </div>
+</section>
+
+<!-- 03 — L'OBJET -->
+<section class="pad-x pad-section">
+  <div class="max-w">
+    <div class="chapter-num reveal">03 — L'Objet</div>
+    <div class="gold-rule" style="margin:16px 0 48px"></div>
+    <div class="objet-grid">
+      <img src="../img/DOUCHETTE_DUO_POWER_ECO_DOUCHE.jpg" alt="Douchette Power Eco-Douche" class="objet-img reveal" loading="lazy">
+      <div>
+        <ul class="objet-specs">
+          <li class="reveal"><span class="label">Matière</span><span class="val">Chrome poli + Silicone</span></li>
+          <li class="reveal"><span class="label">Poids</span><span class="val">210g</span></li>
+          <li class="reveal"><span class="label">Raccordement</span><span class="val">Universel</span></li>
+          <li class="reveal"><span class="label">Garantie</span><span class="val">2 ans</span></li>
+          <li class="reveal"><span class="label">Origine</span><span class="val">France</span></li>
+          <li class="reveal"><span class="label">Pierres</span><span class="val">Tourmaline, Germanium, Argile grise</span></li>
+          <li class="reveal"><span class="label">Positions</span><span class="val">3 (tonique, relaxant, mixte)</span></li>
+        </ul>
+        <div class="objet-price reveal">
+          €29,90
+          <small>Livraison offerte dès €50</small>
+        </div>
+        <button class="link-draw reveal" style="margin-top:24px;font-family:'Fraunces',serif;font-style:italic;font-size:16px" @click="addToCart(products[0])">
+          Ajouter à la boutique →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 — BOUTIQUE -->
+<section class="pad-x pad-section" style="background:var(--paper)">
+  <div class="max-w">
+    <div class="chapter-num reveal">04 — Boutique</div>
+    <div class="gold-rule" style="margin:16px 0 48px"></div>
+    <template x-for="p in products" :key="p.id">
+      <div class="boutique-row reveal" @click="addToCart(p)">
+        <img :src="p.image" :alt="p.name" class="thumb" loading="lazy">
+        <span class="name" x-text="p.name"></span>
+        <span class="desc" x-text="p.description?.substring(0,60)+'...'"></span>
+        <span class="price" x-text="'€'+p.price.toFixed(2)"></span>
+        <button class="add-btn" @click.stop="addToCart(p)">→ Ajouter</button>
+      </div>
+    </template>
+  </div>
+</section>
+
+<!-- 05 — LE BAIN (social) -->
+<section class="pad-x pad-section">
+  <div class="max-w">
+    <div class="chapter-num reveal">05 — Les Réseaux</div>
+    <div class="gold-rule" style="margin:16px 0 48px"></div>
+    <div class="social-grid">
+      <div>
+        <p class="pull-quote reveal" style="margin-bottom:40px">« Le contenu qui<br>fait la différence. »</p>
+        <div class="heygen-area reveal">
+          <label class="subhead" style="display:block;margin-bottom:8px">Script TikTok / Instagram</label>
+          <textarea x-model="heygenScript" placeholder="Écrivez votre script vidéo ici... (ex: Saviez-vous que cette douchette innovante économise 50% d'eau ?)"></textarea>
+          <button class="heygen-btn" @click="generateVideo()" x-text="heygenLoading ? 'Génération en cours...' : '🎬 Générer une vidéo virale'" :disabled="heygenLoading"></button>
+          <p x-show="heygenMsg" style="margin-top:8px;font-size:13px;color:var(--moss);font-style:italic" x-text="heygenMsg"></p>
+        </div>
+        <div class="social-links reveal" style="margin-top:32px">
+          <a href="https://www.facebook.com/powerecodouche" target="_blank" class="link-draw">Facebook</a>
+          <a href="https://www.instagram.com/powerecodouche_" target="_blank" class="link-draw">Instagram</a>
+          <a href="https://www.linkedin.com/company/powerecodouche/" target="_blank" class="link-draw">LinkedIn</a>
+        </div>
+      </div>
+      <div class="video-tiles reveal">
+        <template x-for="v in videos" :key="v.id">
+          <div class="video-tile">
+            <img :src="v.thumbnail" :alt="v.caption">
+            <div class="tag" x-text="v.platform"></div>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 — CONSEILS -->
+<section class="pad-x pad-section conseils-bg" style="background:var(--stone)">
+  <div class="max-w">
+    <div class="chapter-num reveal">06 — Conseils</div>
+    <div class="gold-rule" style="margin:16px 0 48px"></div>
+    <div class="conseils-grid">
+      <div class="conseil reveal">
+        <h3>Nettoyage de la grille</h3>
+        <p>Après les 6 premiers mois d'utilisation, il est conseillé de nettoyer la partie centrale de la douchette pour évacuer les impuretés accumulées. Grâce à un démontage facile, l'entretien devient un jeu d'enfant.</p>
+      </div>
+      <div class="conseil reveal">
+        <h3>Recharge des pierres</h3>
+        <p>Pour recharger les pierres naturelles, retirez le bouchon en silicone, videz complètement, et remettez un sachet de recharge. Durée d'utilisation : 2 ans, selon la dureté du calcaire.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 — CONTACT -->
+<section class="pad-x pad-section">
+  <div class="max-w">
+    <div class="chapter-num reveal">07 — Contact</div>
+    <div class="gold-rule" style="margin:16px 0 48px"></div>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <p class="big">Une question ?<br>Écrivez-nous.</p>
+        <div class="meta">
+          +33 6 13 24 23 72<br>
+          info@powerecodouche.com<br><br>
+          Lundi · Mardi · Jeudi · Vendredi<br>
+          14h — 18h
+        </div>
+      </div>
+      <form class="contact-form reveal" @submit.prevent="sendContact()">
+        <input type="text" placeholder="Votre nom" x-model="contactForm.name" required>
+        <input type="email" placeholder="Votre email" x-model="contactForm.email" required>
+        <textarea placeholder="Votre message" x-model="contactForm.message" required></textarea>
+        <button type="submit" x-text="contactLoading ? 'Envoi...' : 'Envoyer →'" :disabled="contactLoading"></button>
+        <p x-show="contactMsg" class="contact-success" style="margin-top:12px" x-text="contactMsg"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer pad-x">
+  <div class="max-w footer-inner">
+    <div class="footer-copy">
+      <img src="../img/Logo_Power_Eco_Douche_footer.png" alt="Power Eco-Douche" style="height:28px;opacity:0.5;margin-bottom:8px" loading="lazy"><br>
+      © 2026 Power Eco-Douche · Entreprise française
+    </div>
+    <div class="footer-links">
+      <a href="#" class="link-draw">Accueil</a>
+      <a href="#" class="link-draw">Boutique</a>
+      <a href="#" class="link-draw">Conseils</a>
+      <a href="#" class="link-draw">Contact</a>
+    </div>
+    <div class="footer-badges">
+      Visa · Mastercard · PayPal · Garantie 2 ans
+    </div>
+  </div>
+</footer>
+
+<script>
+function shop(){return{
+  products:[],cart:[],cartOpen:false,cartBouncing:false,showCheckout:false,videos:[],
+  customer:{name:'',email:'',phone:'',address:''},
+  orderLoading:false,orderMsg:'',
+  contactForm:{name:'',email:'',message:''},contactLoading:false,contactMsg:'',
+  heygenScript:'',heygenLoading:false,heygenMsg:'',
+  get cartCount(){return this.cart.reduce((s,i)=>s+i.qty,0)},
+  get subtotal(){return this.cart.reduce((s,i)=>s+i.price*i.qty,0)},
+  get total(){return this.subtotal+(this.subtotal>=50?0:4.90)},
+  async init(){
+    const saved=localStorage.getItem('ecodouche-cart');
+    if(saved)try{this.cart=JSON.parse(saved)}catch(e){}
+    try{
+      const r=await fetch('/api/ecodouche/products');
+      const d=await r.json();
+      this.products=d.products||[];
+    }catch(e){console.warn('Products fetch failed',e)}
+    try{
+      const r=await fetch('/api/ecodouche/social/videos');
+      const d=await r.json();
+      this.videos=d.videos||[];
+    }catch(e){}
+    this.$watch('cart',()=>localStorage.setItem('ecodouche-cart',JSON.stringify(this.cart)),{deep:true});
+  },
+  addToCart(p){
+    const existing=this.cart.find(i=>i.id===p.id);
+    if(existing){existing.qty++}
+    else{this.cart.push({id:p.id,name:p.name,price:p.price,image:p.image,qty:1})}
+    this.cartBouncing=true;
+    setTimeout(()=>this.cartBouncing=false,400);
+  },
+  updateQty(id,delta){
+    const item=this.cart.find(i=>i.id===id);
+    if(!item)return;
+    item.qty+=delta;
+    if(item.qty<=0)this.cart=this.cart.filter(i=>i.id!==id);
+  },
+  async placeOrder(){
+    if(!this.customer.name||!this.customer.email)return;
+    this.orderLoading=true;this.orderMsg='';
+    try{
+      const r=await fetch('/api/ecodouche/order',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({customer:this.customer,items:this.cart.map(i=>({id:i.id,qty:i.qty}))})});
+      const d=await r.json();
+      if(d.ok){this.orderMsg='Merci ! Commande '+d.order.id+' enregistrée.';this.cart=[];this.showCheckout=false}
+      else{this.orderMsg=d.error||'Erreur'}
+    }catch(e){this.orderMsg='Erreur réseau'}
+    this.orderLoading=false;
+  },
+  async sendContact(){
+    if(!this.contactForm.name||!this.contactForm.email||!this.contactForm.message)return;
+    this.contactLoading=true;this.contactMsg='';
+    try{
+      const r=await fetch('/api/ecodouche/contact',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(this.contactForm)});
+      const d=await r.json();
+      this.contactMsg=d.message||'Envoyé !';
+      if(d.ok){this.contactForm={name:'',email:'',message:''}}
+    }catch(e){this.contactMsg='Erreur réseau'}
+    this.contactLoading=false;
+  },
+  async generateVideo(){
+    if(!this.heygenScript||this.heygenScript.length<10)return;
+    this.heygenLoading=true;this.heygenMsg='';
+    try{
+      const r=await fetch('/api/ecodouche/heygen/generate',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({script:this.heygenScript})});
+      const d=await r.json();
+      this.heygenMsg=d.message||'En file d\'attente';
+    }catch(e){this.heygenMsg='Erreur réseau'}
+    this.heygenLoading=false;
+  }
+}}
+// GSAP + Lenis
+document.addEventListener('DOMContentLoaded',()=>{
+  const lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t))});
+  function raf(time){lenis.raf(time);requestAnimationFrame(raf)}
+  requestAnimationFrame(raf);
+  gsap.registerPlugin(ScrollTrigger);
+  lenis.on('scroll',ScrollTrigger.update);
+  gsap.ticker.add(time=>lenis.raf(time*1000));
+  gsap.ticker.lagSmoothing(0);
+  // Reveal animations
+  const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!prefersReduced){
+    gsap.utils.toArray('.reveal').forEach((el,i)=>{
+      gsap.fromTo(el,{opacity:0,y:40},{opacity:1,y:0,duration:0.9,ease:'power3.out',
+        scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'}
+      });
+    });
+  }else{
+    document.querySelectorAll('.reveal').forEach(el=>{el.style.opacity=1;el.style.transform='none'});
+  }
+});
+</script>
+</body>
+</html>

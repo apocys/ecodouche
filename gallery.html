@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POWER ECO-DOUCHE — 3 Concepts</title>
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:oklch(0.96 0.01 85);color:oklch(0.18 0.015 60);font-family:'Space Grotesk',sans-serif;min-height:100vh;padding:clamp(32px,6vw,80px)}
+.wrap{max-width:1400px;margin:0 auto}
+.header{margin-bottom:clamp(48px,6vw,96px)}
+.meta{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.5;margin-bottom:16px}
+h1{font-family:'Fraunces',serif;font-size:clamp(2.5rem,7vw,6rem);line-height:0.9;letter-spacing:-0.04em;font-weight:400;margin-bottom:16px}
+h1 em{font-style:italic;color:oklch(0.42 0.055 145)}
+.sub{font-size:17px;opacity:0.6;max-width:56ch;line-height:1.65}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:clamp(24px,3vw,48px)}
+.card{display:block;text-decoration:none;color:inherit;position:relative;aspect-ratio:3/4;overflow:hidden;border:1px solid oklch(0.18 0.015 60 / 0.08);transition:transform 0.5s cubic-bezier(.25,.1,.25,1),border-color 0.5s;background:oklch(1 0 0)}
+.card:hover{transform:translateY(-8px);border-color:oklch(0.42 0.055 145)}
+.card .bg{position:absolute;inset:0;opacity:0.95;transition:opacity 0.5s}
+.card:hover .bg{opacity:1}
+.card.v1 .bg{background:oklch(0.97 0.012 85)}
+.card.v2 .bg{background:oklch(0.91 0.008 95)}
+.card.v3 .bg{background:oklch(0.14 0.025 215);color:oklch(0.95 0.01 210)}
+.card .content{position:relative;z-index:1;padding:clamp(24px,3vw,40px);height:100%;display:flex;flex-direction:column;justify-content:space-between}
+.card .num{font-family:'Fraunces',serif;font-style:italic;font-size:14px;opacity:0.5}
+.card h2{font-family:'Fraunces',serif;font-size:clamp(1.8rem,3vw,2.8rem);line-height:0.95;letter-spacing:-0.03em;font-weight:400;margin-bottom:12px}
+.card.v2 h2{font-family:'Space Grotesk',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:-0.02em}
+.card p{font-size:14px;opacity:0.65;line-height:1.55;max-width:38ch}
+.card .tag{display:inline-block;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;opacity:0.5;margin-top:16px;border-top:1px solid currentColor;padding-top:12px;max-width:fit-content}
+.card .go{margin-top:auto;font-size:13px;letter-spacing:0.04em;display:flex;align-items:center;gap:8px;transition:gap 0.3s}
+.card:hover .go{gap:16px}
+.card .go .arrow{transition:transform 0.3s}
+.card:hover .go .arrow{transform:translateX(4px)}
+.footer{margin-top:clamp(64px,8vw,128px);padding-top:32px;border-top:1px solid oklch(0.18 0.015 60 / 0.1);font-size:12px;opacity:0.5;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="meta">POWER ECO-DOUCHE · 3 CONCEPTS</div>
+    <h1>Trois directions.<br><em>Une marque.</em></h1>
+    <p class="sub">Trois interprétations visuelles d'un même produit — de l'éditorial luxe à l'immersion digitale. Choisissez celle qui parle à votre marque.</p>
+  </div>
+
+  <div class="grid">
+    <a href="/v1/" class="card v1">
+      <div class="bg"></div>
+      <div class="content">
+        <div>
+          <div class="num">01 —</div>
+          <h2>Editorial<br>Luxury</h2>
+          <p>Kinfolk × Aesop × Hermès. Typographie Fraunces sur papier crème, détails laiton, colonnes éditoriales, rythme magazine. L'objet devient une pièce.</p>
+          <div class="tag">Fraunces · Crème · Laiton</div>
+        </div>
+        <div class="go">Découvrir <span class="arrow">→</span></div>
+      </div>
+    </a>
+
+    <a href="/v2/" class="card v2">
+      <div class="bg"></div>
+      <div class="content">
+        <div>
+          <div class="num">02 —</div>
+          <h2>BRUTALIST<br>NATURE</h2>
+          <p>Raw concrete, Swiss grid, geological journal. Archivo Black en capitales, règles hairline, inversions couleur au survol, manifeste architectural.</p>
+          <div class="tag">ARCHIVO · CONCRETE · RUST</div>
+        </div>
+        <div class="go">Entrer <span class="arrow">→</span></div>
+      </div>
+    </a>
+
+    <a href="/v3/" class="card v3">
+      <div class="bg"></div>
+      <div class="content">
+        <div>
+          <div class="num" style="opacity:0.5">03 —</div>
+          <h2>Immersive<br>Water</h2>
+          <p>Bruno Simon × Active Theory. Canvas d'eau dans le hero, curseur sur-mesure, cartes 3D flip, téléphone mockup pour le studio TikTok. Cinématique.</p>
+          <div class="tag">CLASH · OCEAN · CANVAS</div>
+        </div>
+        <div class="go">Plonger <span class="arrow">→</span></div>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">
+    <div>POWER ECO-DOUCHE — Trois concepts, choisissez le vôtre.</div>
+    <div>
+      <a href="/v1/">V1</a> · <a href="/v2/">V2</a> · <a href="/v3/">V3</a> · <a href="/">Original</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

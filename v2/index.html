@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POWER ECO-DOUCHE — MOINS D'EAU. PLUS DE VIE.</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<style>
+:root{
+  --concrete:oklch(0.91 0.008 95);
+  --earth:oklch(0.28 0.04 70);
+  --ink:oklch(0.13 0.01 60);
+  --moss:oklch(0.45 0.09 140);
+  --rust:oklch(0.58 0.12 45);
+  --clay:oklch(0.72 0.05 60);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;border-radius:0!important}
+html{scroll-behavior:auto}
+body{background:var(--concrete);color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:17px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--ink);color:var(--concrete)}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
+
+/* NOISE OVERLAY */
+body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px;mix-blend-mode:multiply}
+
+/* TYPOGRAPHY */
+.display{font-family:'Archivo',sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.04em;line-height:0.82}
+.mono{font-family:'Space Grotesk',monospace;letter-spacing:0.02em}
+.caps{text-transform:uppercase;letter-spacing:0.12em;font-weight:500}
+.meta{font-size:10px;text-transform:uppercase;letter-spacing:0.2em;font-weight:500}
+
+/* LAYOUT */
+.pad-x{padding-left:clamp(24px,4vw,64px);padding-right:clamp(24px,4vw,64px)}
+.pad-y{padding-top:clamp(80px,10vw,140px);padding-bottom:clamp(80px,10vw,140px)}
+.max-w{max-width:1600px;margin:0 auto}
+
+/* RULES */
+.rule{height:1px;background:var(--ink)}
+.rule-thick{height:4px;background:var(--ink)}
+
+/* ─── STICKY SECTION LABEL ─── */
+.section-num{position:absolute;top:32px;right:24px;font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(3rem,6vw,8rem);line-height:1;opacity:0.08;pointer-events:none;letter-spacing:-0.06em}
+
+/* ─── HERO ─── */
+.hero{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding-top:48px;padding-bottom:48px}
+.hero-meta{display:flex;justify-content:space-between;align-items:flex-start}
+.hero-meta .block{max-width:200px}
+.hero-meta .caps{font-size:10px;line-height:2}
+.hero-headline{font-family:'Archivo',sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.05em;line-height:0.82;font-size:clamp(4rem,15vw,20rem);margin:auto 0}
+.hero-marquee{overflow:hidden;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:20px 0;margin-top:48px}
+.marquee-track{display:flex;white-space:nowrap;animation:marquee 40s linear infinite;gap:32px}
+.marquee-track span{font-family:'Archivo',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(1rem,1.8vw,1.4rem);letter-spacing:0.04em}
+.marquee-track span::after{content:'●';margin-left:32px;color:var(--rust)}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.hero-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:24px}
+.scroll-hint{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(1rem,1.5vw,1.2rem);letter-spacing:0.05em;text-transform:uppercase}
+
+/* ─── FAITS TABLE ─── */
+.faits{background:var(--earth);color:var(--concrete);position:relative}
+.faits .section-num{opacity:0.15;color:var(--concrete)}
+.faits-table{border-top:1px solid var(--concrete)}
+.fait-row{display:grid;grid-template-columns:80px 140px 1fr 2fr;gap:24px;align-items:center;padding:32px 0;border-bottom:1px solid var(--concrete);transition:background 0.2s,color 0.2s,padding 0.2s;cursor:default}
+.fait-row:hover{background:var(--concrete);color:var(--earth);padding-left:24px;padding-right:24px}
+.fait-row .num{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(1.5rem,2.5vw,2rem);opacity:0.4}
+.fait-row .big{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,5rem);line-height:1;letter-spacing:-0.03em}
+.fait-row .title{font-family:'Archivo',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(0.9rem,1.4vw,1.2rem);letter-spacing:0.04em}
+.fait-row .desc{font-size:15px;line-height:1.5;opacity:0.7}
+
+/* ─── PIERRE SPECIMENS ─── */
+.pierre-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.pierre{padding:48px 32px;border-right:1px solid var(--ink);position:relative}
+.pierre:last-child{border-right:none}
+.pierre .roman{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(3rem,6vw,7rem);line-height:1;letter-spacing:-0.04em}
+.pierre img{width:100%;aspect-ratio:1;object-fit:cover;filter:grayscale(0.3) contrast(1.1);margin:24px 0}
+.pierre .name{font-family:'Archivo',sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(1.2rem,2vw,1.6rem);letter-spacing:-0.02em;margin-bottom:8px}
+.pierre .latin{font-size:11px;text-transform:uppercase;letter-spacing:0.1em;opacity:0.5;margin-bottom:16px}
+.pierre .tag{font-family:'Archivo',sans-serif;font-weight:700;text-transform:uppercase;font-size:14px;letter-spacing:0.02em}
+.pierre-quote{text-align:center;margin-top:80px}
+.pierre-quote p{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,5rem);text-transform:uppercase;letter-spacing:-0.03em;line-height:0.92}
+
+/* ─── OBJET ─── */
+.objet{background:var(--clay);position:relative}
+.objet-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:80vh;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.objet-img-wrap{border-right:1px solid var(--ink);padding:48px;display:flex;align-items:center;justify-content:center;background:var(--concrete)}
+.objet-img-wrap img{max-width:100%;max-height:60vh;object-fit:contain;filter:contrast(1.05)}
+.objet-specs{padding:48px;display:flex;flex-direction:column;justify-content:center;background:var(--clay)}
+.spec-row{display:grid;grid-template-columns:160px 1fr;gap:24px;padding:16px 0;border-bottom:1px solid var(--ink);font-family:'Space Grotesk',monospace;font-size:14px}
+.spec-row .label{text-transform:uppercase;letter-spacing:0.1em;font-weight:700;opacity:0.6}
+.spec-row .value{text-transform:uppercase;letter-spacing:0.03em;font-weight:600}
+.objet-cta{display:flex;align-items:center;gap:16px;margin-top:32px}
+.btn-brutal{background:var(--ink);color:var(--concrete);padding:20px 32px;font-family:'Archivo',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;font-size:14px;transition:all 0.15s}
+.btn-brutal:hover{background:var(--rust);color:var(--concrete)}
+.stock-dot{display:flex;align-items:center;gap:8px;font-family:'Space Grotesk',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase}
+.stock-dot::before{content:'';width:8px;height:8px;background:var(--moss);display:inline-block;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* ─── CATALOGUE ─── */
+.cat-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px}
+.cat-header h2{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(3rem,10vw,12rem);line-height:0.85;text-transform:uppercase;letter-spacing:-0.05em}
+.cat-list{border-top:2px solid var(--ink)}
+.cat-row{display:grid;grid-template-columns:100px 60px 1fr auto auto;gap:24px;align-items:center;padding:24px 0;border-bottom:1px solid var(--ink);transition:all 0.15s;cursor:pointer}
+.cat-row:hover{background:var(--ink);color:var(--concrete);padding-left:24px;padding-right:24px}
+.cat-row:hover .cat-btn{background:var(--concrete);color:var(--ink);border-color:var(--concrete)}
+.cat-row .thumb{width:100px;height:100px;object-fit:cover;filter:contrast(1.05)}
+.cat-row .num{font-family:'Space Grotesk',monospace;font-weight:700;font-size:14px;letter-spacing:0.05em;opacity:0.4}
+.cat-row:hover .num{opacity:0.7}
+.cat-row .name{font-family:'Archivo',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(1rem,1.8vw,1.3rem);letter-spacing:-0.01em}
+.cat-row .price{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(1.2rem,2vw,1.6rem);letter-spacing:-0.01em;white-space:nowrap}
+.cat-btn{padding:14px 24px;border:1px solid var(--ink);font-family:'Archivo',sans-serif;font-weight:700;text-transform:uppercase;font-size:12px;letter-spacing:0.08em;white-space:nowrap;transition:all 0.15s}
+
+/* ─── CART ICON & DRAWER ─── */
+.cart-icon{position:fixed;top:24px;right:24px;z-index:1000;width:56px;height:56px;background:var(--ink);color:var(--concrete);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:900;font-size:18px;cursor:pointer;transition:background 0.2s}
+.cart-icon:hover{background:var(--rust)}
+.cart-bounce{animation:cartBounce 0.3s ease}
+@keyframes cartBounce{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.cart-drawer{position:fixed;top:0;right:0;width:min(460px,90vw);height:100vh;background:var(--concrete);border-left:2px solid var(--ink);z-index:2000;transform:translateX(100%);transition:transform 0.4s cubic-bezier(.5,0,.2,1);padding:32px;overflow-y:auto}
+.cart-drawer.open{transform:translateX(0)}
+.cart-overlay{position:fixed;inset:0;z-index:1999;background:oklch(0.13 0.01 60 / 0.5);opacity:0;pointer-events:none;transition:opacity 0.3s}
+.cart-overlay.open{opacity:1;pointer-events:auto}
+.cart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:16px;border-bottom:2px solid var(--ink)}
+.cart-header h3{font-family:'Archivo',sans-serif;font-weight:900;text-transform:uppercase;font-size:20px;letter-spacing:-0.02em}
+.cart-item{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--ink);align-items:center}
+.cart-item img{width:72px;height:72px;object-fit:cover}
+.cart-item .info{flex:1}
+.cart-item .info .n{font-family:'Archivo',sans-serif;font-weight:700;text-transform:uppercase;font-size:13px}
+.cart-item .info .p{font-family:'Space Grotesk',monospace;font-size:12px;letter-spacing:0.04em;opacity:0.6;margin-top:4px}
+.cart-qty{display:flex;gap:4px}
+.cart-qty button{width:32px;height:32px;border:1px solid var(--ink);background:var(--concrete);font-family:'Archivo',sans-serif;font-weight:900;font-size:14px;transition:all 0.15s}
+.cart-qty button:hover{background:var(--ink);color:var(--concrete)}
+.cart-qty span{display:flex;align-items:center;justify-content:center;min-width:32px;font-family:'Archivo',sans-serif;font-weight:700}
+.cart-totals{margin-top:24px;padding-top:16px;border-top:2px solid var(--ink);font-family:'Space Grotesk',monospace;font-size:13px}
+.cart-totals .row{display:flex;justify-content:space-between;padding:4px 0;text-transform:uppercase;letter-spacing:0.06em}
+.cart-totals .total{font-family:'Archivo',sans-serif;font-weight:900;font-size:24px;padding-top:12px;margin-top:8px;border-top:1px solid var(--ink);letter-spacing:-0.02em}
+.checkout-btn{width:100%;padding:18px;background:var(--ink);color:var(--concrete);font-family:'Archivo',sans-serif;font-weight:900;text-transform:uppercase;font-size:15px;letter-spacing:0.05em;margin-top:16px;transition:background 0.15s}
+.checkout-btn:hover{background:var(--rust)}
+.checkout-form input,.checkout-form textarea{width:100%;padding:14px;border:1px solid var(--ink);background:var(--concrete);font:inherit;font-size:14px;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.02em;font-family:'Space Grotesk',monospace;outline:none}
+.checkout-form input:focus,.checkout-form textarea:focus{background:var(--clay)}
+.checkout-form input::placeholder{color:var(--ink);opacity:0.5}
+
+/* ─── VIRAL (social) ─── */
+.viral{background:var(--moss);color:var(--concrete);position:relative}
+.viral .section-num{opacity:0.12;color:var(--concrete)}
+.viral-header{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(3rem,10vw,12rem);line-height:0.85;text-transform:uppercase;letter-spacing:-0.05em;margin-bottom:48px}
+.viral-header span{display:block}
+.viral-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:48px;margin-top:32px}
+.video-tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.video-tile{aspect-ratio:9/16;background:var(--ink);border:1px solid var(--concrete);overflow:hidden;position:relative;transition:transform 0.2s}
+.video-tile:hover{transform:translateY(-4px)}
+.video-tile img{width:100%;height:100%;object-fit:cover;opacity:0.8}
+.video-tile .tag{position:absolute;bottom:8px;left:8px;background:var(--concrete);color:var(--ink);padding:4px 8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:9px;letter-spacing:0.1em;text-transform:uppercase}
+.viral-controls label{display:block;font-family:'Archivo',sans-serif;font-weight:700;text-transform:uppercase;font-size:12px;letter-spacing:0.08em;margin-bottom:12px;opacity:0.8}
+.viral-controls textarea{width:100%;background:var(--ink);color:var(--concrete);border:1px solid var(--concrete);padding:16px;font:inherit;font-size:14px;resize:vertical;min-height:120px;font-family:'Space Grotesk',monospace}
+.viral-controls .btn-viral{margin-top:16px;padding:18px 32px;background:var(--concrete);color:var(--moss);border:1px solid var(--concrete);font-family:'Archivo',sans-serif;font-weight:900;text-transform:uppercase;font-size:14px;letter-spacing:0.05em;transition:all 0.15s}
+.viral-controls .btn-viral:hover{background:var(--rust);color:var(--concrete);border-color:var(--rust)}
+.social-links{margin-top:48px;display:flex;gap:32px;font-family:'Archivo',sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(1rem,1.6vw,1.4rem);letter-spacing:-0.01em}
+.social-links a{transition:opacity 0.2s}
+.social-links a:hover{opacity:0.6}
+
+/* ─── ENTRETIEN ─── */
+.entretien-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.entretien{padding:48px;border-right:1px solid var(--ink)}
+.entretien:last-child{border-right:none}
+.entretien h3{font-family:'Archivo',sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(1.5rem,3vw,2.4rem);letter-spacing:-0.03em;margin-bottom:24px}
+.entretien ol{list-style:none;counter-reset:step}
+.entretien li{counter-increment:step;padding:16px 0;border-bottom:1px solid var(--ink);font-size:15px;line-height:1.5;position:relative;padding-left:48px}
+.entretien li::before{content:counter(step,decimal-leading-zero);position:absolute;left:0;top:16px;font-family:'Archivo',sans-serif;font-weight:900;font-size:14px;opacity:0.4}
+
+/* ─── CONTACT ─── */
+.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:48px}
+.contact-info h2{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(3rem,8vw,9rem);line-height:0.85;text-transform:uppercase;letter-spacing:-0.05em;margin-bottom:48px}
+.contact-info .info-block{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--ink);font-family:'Space Grotesk',monospace;font-size:14px}
+.contact-info .info-block:last-child{border-bottom:1px solid var(--ink)}
+.contact-info .info-block .k{text-transform:uppercase;letter-spacing:0.1em;font-weight:700;opacity:0.5}
+.contact-info .info-block .v{text-transform:uppercase;letter-spacing:0.02em;font-weight:600}
+.contact-form input,.contact-form textarea{width:100%;padding:18px;background:var(--concrete);border:1px solid var(--ink);font:inherit;font-family:'Space Grotesk',monospace;font-size:14px;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.03em;outline:none}
+.contact-form input:focus,.contact-form textarea:focus{background:var(--clay)}
+.contact-form textarea{resize:vertical;min-height:160px}
+.contact-form button{padding:20px 40px;background:var(--ink);color:var(--concrete);font-family:'Archivo',sans-serif;font-weight:900;text-transform:uppercase;font-size:14px;letter-spacing:0.06em;transition:background 0.15s}
+.contact-form button:hover{background:var(--rust)}
+
+/* ─── FOOTER ─── */
+.footer{border-top:4px solid var(--ink);padding:32px 0 0}
+.footer-top{display:grid;grid-template-columns:1fr 2fr 1fr;gap:32px;padding-bottom:32px;border-bottom:1px solid var(--ink);align-items:center}
+.footer-top .copy{font-family:'Space Grotesk',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase}
+.footer-top .nav{display:flex;gap:24px;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.1em;text-transform:uppercase}
+.footer-top .pay{font-family:'Space Grotesk',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;text-align:right;opacity:0.6}
+.wordmark{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(3rem,18vw,30rem);line-height:0.8;letter-spacing:-0.08em;text-transform:uppercase;padding:48px 0;overflow:hidden;white-space:nowrap}
+
+/* ─── REVEAL ─── */
+.reveal{opacity:0;transform:translateY(30px)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .hero-meta{flex-direction:column;gap:24px}
+  .hero-bottom{flex-direction:column;align-items:flex-start;gap:16px}
+  .fait-row{grid-template-columns:40px 1fr;gap:12px;padding:20px 0}
+  .fait-row .big{font-size:2rem;grid-column:2}
+  .fait-row .title{grid-column:2}
+  .fait-row .desc{grid-column:2}
+  .pierre-grid{grid-template-columns:1fr}
+  .pierre{border-right:none;border-bottom:1px solid var(--ink)}
+  .objet-grid{grid-template-columns:1fr}
+  .objet-img-wrap{border-right:none;border-bottom:1px solid var(--ink)}
+  .cat-row{grid-template-columns:60px 1fr auto;gap:12px}
+  .cat-row .num,.cat-row .price{display:none}
+  .cat-row .thumb{width:60px;height:60px}
+  .viral-grid{grid-template-columns:1fr}
+  .video-tiles{grid-template-columns:1fr 1fr}
+  .entretien-grid{grid-template-columns:1fr}
+  .entretien{border-right:none;border-bottom:1px solid var(--ink)}
+  .contact-grid{grid-template-columns:1fr}
+  .contact-info .info-block{grid-template-columns:100px 1fr}
+  .footer-top{grid-template-columns:1fr;text-align:left}
+  .footer-top .nav{justify-content:flex-start;flex-wrap:wrap}
+  .footer-top .pay{text-align:left}
+}
+@media(max-width:600px){
+  .hero-headline{font-size:clamp(3.5rem,14vw,6rem)}
+}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none}
+  .marquee-track{animation:none}
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body x-data="shop()" x-init="init()">
+
+<!-- CART ICON -->
+<div class="cart-icon" @click="cartOpen=true" :class="{'cart-bounce':cartBouncing}" x-text="cartCount"></div>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" :class="{'open':cartOpen}" @click="cartOpen=false"></div>
+
+<!-- CART DRAWER -->
+<div class="cart-drawer" :class="{'open':cartOpen}">
+  <div class="cart-header">
+    <h3>Panier / <span x-text="cartCount"></span></h3>
+    <button @click="cartOpen=false" style="font-size:24px;font-weight:900">×</button>
+  </div>
+  <template x-if="cart.length===0">
+    <p style="text-align:center;margin-top:48px;font-family:'Archivo',sans-serif;font-weight:700;text-transform:uppercase;opacity:0.4">Panier vide</p>
+  </template>
+  <template x-for="item in cart" :key="item.id">
+    <div class="cart-item">
+      <img :src="item.image" :alt="item.name">
+      <div class="info">
+        <div class="n" x-text="item.name"></div>
+        <div class="p" x-text="'€' + item.price.toFixed(2)"></div>
+      </div>
+      <div class="cart-qty">
+        <button @click="updateQty(item.id,-1)">−</button>
+        <span x-text="item.qty"></span>
+        <button @click="updateQty(item.id,1)">+</button>
+      </div>
+    </div>
+  </template>
+  <template x-if="cart.length>0">
+    <div>
+      <div class="cart-totals">
+        <div class="row"><span>Sous-total</span><span x-text="'€'+subtotal.toFixed(2)"></span></div>
+        <div class="row"><span>Livraison</span><span x-text="subtotal>=50 ? 'Offerte' : '€4,90'"></span></div>
+        <div class="row total"><span>Total</span><span x-text="'€'+total.toFixed(2)"></span></div>
+      </div>
+      <template x-if="!showCheckout">
+        <button class="checkout-btn" @click="showCheckout=true">Commander →</button>
+      </template>
+      <template x-if="showCheckout">
+        <div class="checkout-form" style="margin-top:16px">
+          <input type="text" placeholder="Nom" x-model="customer.name" required>
+          <input type="email" placeholder="Email" x-model="customer.email" required>
+          <input type="tel" placeholder="Téléphone" x-model="customer.phone">
+          <input type="text" placeholder="Adresse" x-model="customer.address">
+          <button class="checkout-btn" @click="placeOrder()" :disabled="orderLoading" x-text="orderLoading ? 'En cours...' : 'Confirmer →'"></button>
+          <p x-show="orderMsg" style="margin-top:12px;font-family:'Space Grotesk',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.05em" x-text="orderMsg"></p>
+        </div>
+      </template>
+    </div>
+  </template>
+</div>
+
+<!-- HERO -->
+<section class="hero pad-x">
+  <div class="hero-meta">
+    <div class="block">
+      <div class="meta reveal">POWER ECO-DOUCHE</div>
+      <div class="meta reveal" style="opacity:0.6">DOUCHETTE GÉOTHERMALE</div>
+      <div class="meta reveal" style="opacity:0.6">ESTABLISHED FRANCE · 2026</div>
+    </div>
+    <div class="block" style="text-align:right">
+      <div class="meta reveal">01 / MANIFESTO</div>
+      <div class="meta reveal" style="opacity:0.6">SCROLL ↓</div>
+    </div>
+  </div>
+
+  <h1 class="hero-headline">
+    <span class="reveal">MOINS</span><br>
+    <span class="reveal">D'EAU.</span><br>
+    <span class="reveal">PLUS</span><br>
+    <span class="reveal">DE VIE.</span>
+  </h1>
+
+  <div>
+    <div class="hero-marquee">
+      <div class="marquee-track">
+        <span>ÉCOLOGIQUE</span><span>ÉCONOMIQUE</span><span>FRANÇAIS</span><span>DURABLE</span><span>50% D'ÉCONOMIE</span><span>100% NATUREL</span>
+        <span>ÉCOLOGIQUE</span><span>ÉCONOMIQUE</span><span>FRANÇAIS</span><span>DURABLE</span><span>50% D'ÉCONOMIE</span><span>100% NATUREL</span>
+      </div>
+    </div>
+    <div class="hero-bottom">
+      <div class="scroll-hint reveal">↓ DESCENDRE</div>
+      <div class="meta reveal" style="opacity:0.5">DOUCHETTE GÉOTHERMALE · €29,90</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 LES FAITS -->
+<section class="faits pad-x pad-y">
+  <div class="section-num">02</div>
+  <div class="max-w">
+    <div class="meta reveal" style="margin-bottom:32px">02 / LES FAITS</div>
+    <div class="faits-table">
+      <div class="fait-row reveal">
+        <div class="num">01</div>
+        <div class="big">50%</div>
+        <div class="title">ÉCONOMIE D'EAU</div>
+        <div class="desc">Grâce aux micro-trous coniques et à la technologie brevetée des billes naturelles.</div>
+      </div>
+      <div class="fait-row reveal">
+        <div class="num">02</div>
+        <div class="big">3</div>
+        <div class="title">POSITIONS DE MASSAGE</div>
+        <div class="desc">Tonique, relaxant et mixte — adaptée à chaque moment de votre journée.</div>
+      </div>
+      <div class="fait-row reveal">
+        <div class="num">03</div>
+        <div class="big">100%</div>
+        <div class="title">NATUREL</div>
+        <div class="desc">Tourmaline, germanium et argile grise : trois pierres naturelles, zéro chimie.</div>
+      </div>
+      <div class="fait-row reveal">
+        <div class="num">04</div>
+        <div class="big">2 ANS</div>
+        <div class="title">GARANTIE</div>
+        <div class="desc">Zéro souci, maintenance facile et recharge de billes incluse tous les 24 mois.</div>
+      </div>
+      <div class="fait-row reveal">
+        <div class="num">05</div>
+        <div class="big">∞</div>
+        <div class="title">RACCORD UNIVERSEL</div>
+        <div class="desc">Compatible avec tous les robinets standards — installation en 30 secondes.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 LA PIERRE -->
+<section class="pad-x pad-y" style="position:relative">
+  <div class="section-num">03</div>
+  <div class="max-w">
+    <div class="meta reveal" style="margin-bottom:32px">03 / LA PIERRE</div>
+    <div class="pierre-grid">
+      <div class="pierre reveal">
+        <div class="roman">I</div>
+        <img src="../img/POWER_ECO_DOUCHE_TOURMALINE.jpg" alt="Tourmaline" loading="lazy">
+        <div class="name">Tourmaline</div>
+        <div class="latin">Silicate cyclique</div>
+        <div class="tag">« Apaise la peau. Équilibre. »</div>
+      </div>
+      <div class="pierre reveal">
+        <div class="roman">II</div>
+        <img src="../img/POWER_ECO_DOUCHE_GERMANIUM.jpg" alt="Germanium" loading="lazy">
+        <div class="name">Germanium</div>
+        <div class="latin">Métalloïde rare</div>
+        <div class="tag">« Neutralise chlore & métaux. »</div>
+      </div>
+      <div class="pierre reveal">
+        <div class="roman">III</div>
+        <img src="../img/POWER_ECO_DOUCHE_ARGILE_GRISE.jpg" alt="Argile grise" loading="lazy">
+        <div class="name">Argile grise</div>
+        <div class="latin">Silicate lamellaire</div>
+        <div class="tag">« Purifie. Restructure l'eau. »</div>
+      </div>
+    </div>
+    <div class="pierre-quote reveal">
+      <p>La géologie<br>comme thérapie.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 OBJET -->
+<section class="objet pad-x" style="position:relative;padding-top:0;padding-bottom:0">
+  <div class="section-num">04</div>
+  <div class="max-w" style="padding-top:48px;padding-bottom:48px">
+    <div class="meta reveal">04 / L'OBJET</div>
+  </div>
+  <div class="objet-grid max-w">
+    <div class="objet-img-wrap reveal">
+      <img src="../img/DOUCHETTE_DUO_POWER_ECO_DOUCHE.jpg" alt="Douchette Power Eco-Douche" loading="lazy">
+    </div>
+    <div class="objet-specs">
+      <div class="spec-row reveal"><span class="label">Objet</span><span class="value">Douchette Power Eco-Douche</span></div>
+      <div class="spec-row reveal"><span class="label">Matière</span><span class="value">Chrome poli + silicone</span></div>
+      <div class="spec-row reveal"><span class="label">Poids</span><span class="value">210g</span></div>
+      <div class="spec-row reveal"><span class="label">Raccord</span><span class="value">Universel</span></div>
+      <div class="spec-row reveal"><span class="label">Garantie</span><span class="value">2 ans</span></div>
+      <div class="spec-row reveal"><span class="label">Origine</span><span class="value">France</span></div>
+      <div class="spec-row reveal"><span class="label">Prix</span><span class="value" style="font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(1.5rem,3vw,2.2rem);letter-spacing:-0.02em">€29,90</span></div>
+      <div class="objet-cta reveal">
+        <button class="btn-brutal" @click="addToCart(products.find(p=>p.id===1))">AJOUTER AU PANIER →</button>
+        <div class="stock-dot">247 EN STOCK</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 CATALOGUE -->
+<section class="pad-x pad-y" style="position:relative">
+  <div class="section-num">05</div>
+  <div class="max-w">
+    <div class="cat-header">
+      <div>
+        <div class="meta reveal" style="margin-bottom:16px">05 / CATALOGUE</div>
+        <h2 class="reveal">CATALOGUE.</h2>
+      </div>
+      <div class="meta reveal" style="opacity:0.5" x-text="products.length + ' ARTICLES'"></div>
+    </div>
+    <div class="cat-list">
+      <template x-for="(p, i) in products" :key="p.id">
+        <div class="cat-row reveal" @click="addToCart(p)">
+          <img :src="p.image" :alt="p.name" class="thumb" loading="lazy">
+          <div class="num" x-text="String(i+1).padStart(2,'0')"></div>
+          <div class="name" x-text="p.name"></div>
+          <div class="price" x-text="'€'+p.price.toFixed(2).replace('.',',')"></div>
+          <button class="cat-btn" @click.stop="addToCart(p)">AJOUTER →</button>
+        </div>
+      </template>
+    </div>
+  </div>
+</section>
+
+<!-- 06 VIRAL -->
+<section class="viral pad-x pad-y">
+  <div class="section-num">06</div>
+  <div class="max-w">
+    <div class="meta reveal" style="margin-bottom:32px;opacity:0.7">06 / VIRAL</div>
+    <h2 class="viral-header">
+      <span class="reveal">TIKTOK.</span>
+      <span class="reveal">INSTAGRAM.</span>
+      <span class="reveal">VIRAL.</span>
+    </h2>
+    <div class="viral-grid">
+      <div class="video-tiles reveal">
+        <template x-for="v in videos" :key="v.id">
+          <div class="video-tile">
+            <img :src="v.thumbnail" :alt="v.caption">
+            <div class="tag" x-text="v.platform"></div>
+          </div>
+        </template>
+      </div>
+      <div class="viral-controls reveal">
+        <label>Script TikTok / Reels</label>
+        <textarea x-model="heygenScript" placeholder="ÉCRIVEZ VOTRE SCRIPT VIDÉO ICI...&#10;EX: SAVIEZ-VOUS QUE CETTE DOUCHETTE ÉCONOMISE 50% D'EAU ?"></textarea>
+        <button class="btn-viral" @click="generateVideo()" :disabled="heygenLoading" x-text="heygenLoading ? 'GÉNÉRATION...' : 'GÉNÉRER VIDÉO →'"></button>
+        <p x-show="heygenMsg" style="margin-top:12px;font-family:'Space Grotesk',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;opacity:0.8" x-text="heygenMsg"></p>
+      </div>
+    </div>
+    <div class="social-links reveal">
+      <a href="https://www.facebook.com/powerecodouche" target="_blank">FACEBOOK ↗</a>
+      <a href="https://www.instagram.com/powerecodouche_" target="_blank">INSTAGRAM ↗</a>
+      <a href="https://www.linkedin.com/company/powerecodouche/" target="_blank">LINKEDIN ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- 07 ENTRETIEN -->
+<section class="pad-x pad-y" style="position:relative">
+  <div class="section-num">07</div>
+  <div class="max-w">
+    <div class="meta reveal" style="margin-bottom:32px">07 / ENTRETIEN</div>
+    <div class="entretien-grid">
+      <div class="entretien reveal">
+        <h3>NETTOYAGE</h3>
+        <ol>
+          <li>Dévissez le corps central de la douchette.</li>
+          <li>Rincez la grille sous l'eau tiède.</li>
+          <li>Brossez doucement pour évacuer le calcaire.</li>
+          <li>Remontez — opération à répéter tous les 6 mois.</li>
+        </ol>
+      </div>
+      <div class="entretien reveal">
+        <h3>RECHARGE</h3>
+        <ol>
+          <li>Retirez le bouchon silicone de la poignée.</li>
+          <li>Videz complètement les anciennes pierres.</li>
+          <li>Insérez un sachet de recharge neuf.</li>
+          <li>Revissez — durée 2 ans selon calcaire.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 CONTACT -->
+<section class="pad-x pad-y" style="position:relative;background:var(--clay)">
+  <div class="section-num">08</div>
+  <div class="max-w">
+    <div class="meta reveal" style="margin-bottom:32px">08 / CONTACT</div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h2 class="reveal">CONTACT.</h2>
+        <div class="info-block reveal"><div class="k">ADRESSE</div><div class="v">France</div></div>
+        <div class="info-block reveal"><div class="k">TÉLÉPHONE</div><div class="v">+33 6 13 24 23 72</div></div>
+        <div class="info-block reveal"><div class="k">EMAIL</div><div class="v">info@powerecodouche.com</div></div>
+        <div class="info-block reveal"><div class="k">HORAIRES</div><div class="v">LUN · MAR · JEU · VEN / 14h — 18h</div></div>
+      </div>
+      <form class="contact-form reveal" @submit.prevent="sendContact()">
+        <input type="text" placeholder="NOM" x-model="contactForm.name" required>
+        <input type="email" placeholder="EMAIL" x-model="contactForm.email" required>
+        <textarea placeholder="MESSAGE" x-model="contactForm.message" required></textarea>
+        <button type="submit" :disabled="contactLoading" x-text="contactLoading ? 'ENVOI...' : 'ENVOYER →'"></button>
+        <p x-show="contactMsg" style="margin-top:16px;font-family:'Space Grotesk',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.05em" x-text="contactMsg"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer pad-x">
+  <div class="max-w">
+    <div class="footer-top">
+      <div class="copy">© 2026<br>POWER ECO-DOUCHE<br>ENTREPRISE FRANÇAISE</div>
+      <div class="nav">
+        <a href="#">ACCUEIL</a>
+        <a href="#">BOUTIQUE</a>
+        <a href="#">ENTRETIEN</a>
+        <a href="#">CONTACT</a>
+        <a href="#">CGV</a>
+      </div>
+      <div class="pay">VISA · MC · PAYPAL<br>GARANTIE 2 ANS</div>
+    </div>
+  </div>
+  <div class="wordmark">POWERECODOUCHE</div>
+</footer>
+
+<script>
+function shop(){return{
+  products:[],cart:[],cartOpen:false,cartBouncing:false,showCheckout:false,videos:[],
+  customer:{name:'',email:'',phone:'',address:''},
+  orderLoading:false,orderMsg:'',
+  contactForm:{name:'',email:'',message:''},contactLoading:false,contactMsg:'',
+  heygenScript:'',heygenLoading:false,heygenMsg:'',
+  get cartCount(){return this.cart.reduce((s,i)=>s+i.qty,0)},
+  get subtotal(){return this.cart.reduce((s,i)=>s+i.price*i.qty,0)},
+  get total(){return this.subtotal+(this.subtotal>=50?0:4.90)},
+  async init(){
+    const saved=localStorage.getItem('ecodouche-cart-v2');
+    if(saved)try{this.cart=JSON.parse(saved)}catch(e){}
+    try{
+      const r=await fetch('/api/ecodouche/products');
+      const d=await r.json();
+      this.products=d.products||[];
+    }catch(e){console.warn('Products fetch failed',e)}
+    try{
+      const r=await fetch('/api/ecodouche/social/videos');
+      const d=await r.json();
+      this.videos=d.videos||[];
+    }catch(e){}
+    this.$watch('cart',()=>localStorage.setItem('ecodouche-cart-v2',JSON.stringify(this.cart)),{deep:true});
+  },
+  addToCart(p){
+    if(!p)return;
+    const existing=this.cart.find(i=>i.id===p.id);
+    if(existing){existing.qty++}
+    else{this.cart.push({id:p.id,name:p.name,price:p.price,image:p.image,qty:1})}
+    this.cartBouncing=true;
+    setTimeout(()=>this.cartBouncing=false,300);
+  },
+  updateQty(id,delta){
+    const item=this.cart.find(i=>i.id===id);
+    if(!item)return;
+    item.qty+=delta;
+    if(item.qty<=0)this.cart=this.cart.filter(i=>i.id!==id);
+  },
+  async placeOrder(){
+    if(!this.customer.name||!this.customer.email)return;
+    this.orderLoading=true;this.orderMsg='';
+    try{
+      const r=await fetch('/api/ecodouche/order',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({customer:this.customer,items:this.cart.map(i=>({id:i.id,qty:i.qty}))})});
+      const d=await r.json();
+      if(d.ok){this.orderMsg='COMMANDE '+d.order.id+' ENREGISTRÉE';this.cart=[];this.showCheckout=false}
+      else{this.orderMsg=d.error||'ERREUR'}
+    }catch(e){this.orderMsg='ERREUR RÉSEAU'}
+    this.orderLoading=false;
+  },
+  async sendContact(){
+    if(!this.contactForm.name||!this.contactForm.email||!this.contactForm.message)return;
+    this.contactLoading=true;this.contactMsg='';
+    try{
+      const r=await fetch('/api/ecodouche/contact',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(this.contactForm)});
+      const d=await r.json();
+      this.contactMsg=(d.message||'ENVOYÉ').toUpperCase();
+      if(d.ok){this.contactForm={name:'',email:'',message:''}}
+    }catch(e){this.contactMsg='ERREUR RÉSEAU'}
+    this.contactLoading=false;
+  },
+  async generateVideo(){
+    if(!this.heygenScript||this.heygenScript.length<10)return;
+    this.heygenLoading=true;this.heygenMsg='';
+    try{
+      const r=await fetch('/api/ecodouche/heygen/generate',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({script:this.heygenScript})});
+      const d=await r.json();
+      this.heygenMsg=(d.message||'EN ATTENTE').toUpperCase();
+    }catch(e){this.heygenMsg='ERREUR RÉSEAU'}
+    this.heygenLoading=false;
+  }
+}}
+document.addEventListener('DOMContentLoaded',()=>{
+  const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!prefersReduced){
+    const lenis=new Lenis({duration:1.1,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t))});
+    function raf(time){lenis.raf(time);requestAnimationFrame(raf)}
+    requestAnimationFrame(raf);
+    gsap.registerPlugin(ScrollTrigger);
+    lenis.on('scroll',ScrollTrigger.update);
+    gsap.ticker.add(time=>lenis.raf(time*1000));
+    gsap.ticker.lagSmoothing(0);
+    gsap.utils.toArray('.reveal').forEach((el,i)=>{
+      gsap.fromTo(el,{opacity:0,y:30},{opacity:1,y:0,duration:0.8,ease:'power3.out',
+        scrollTrigger:{trigger:el,start:'top 90%',toggleActions:'play none none none'}
+      });
+    });
+    // Hero letters stagger
+    gsap.fromTo('.hero-headline .reveal',{opacity:0,y:60},{opacity:1,y:0,duration:1,stagger:0.12,ease:'power4.out',delay:0.2});
+  }else{
+    document.querySelectorAll('.reveal').forEach(el=>{el.style.opacity=1;el.style.transform='none'});
+  }
+});
+</script>
+</body>
+</html>
