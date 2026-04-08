@@ -91,17 +91,17 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 
 /* ─── BOUTIQUE ─── */
 .boutique-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:32px}
-.boutique-card{position:relative;cursor:pointer;transition:transform 0.4s cubic-bezier(0.25,0.1,0.25,1);background:var(--stone);border-radius:4px;overflow:hidden;display:flex;flex-direction:column}
-.boutique-card:hover{transform:translateY(-6px)}
-.boutique-card .thumb-wrap{aspect-ratio:4/5;overflow:hidden;background:oklch(0.72 0.12 75 / 0.15);flex-shrink:0}
+.boutique-card{position:relative;cursor:pointer;transition:transform 0.4s cubic-bezier(0.25,0.1,0.25,1),box-shadow 0.4s;background:#fff;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 3px oklch(0 0 0 / 0.06);border:1px solid oklch(0.72 0.12 75 / 0.2)}
+.boutique-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px oklch(0 0 0 / 0.12)}
+.boutique-card .thumb-wrap{aspect-ratio:4/5;overflow:hidden;background:var(--stone);flex-shrink:0}
 .boutique-card .thumb{width:100%;height:100%;object-fit:cover;transition:transform 0.6s cubic-bezier(0.25,0.1,0.25,1)}
 .boutique-card:hover .thumb{transform:scale(1.04)}
-.boutique-card .card-body{padding:16px;display:flex;flex-direction:column;flex:1}
-.boutique-card .name{font-family:'Fraunces',serif;font-style:italic;font-size:16px;line-height:1.3;margin-bottom:6px}
-.boutique-card .desc{font-size:12px;color:var(--ink);opacity:0.5;line-height:1.5;margin-bottom:auto;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;padding-bottom:12px}
-.boutique-card .card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:12px;border-top:1px solid oklch(0.72 0.12 75 / 0.15)}
-.boutique-card .price{font-family:'Fraunces',serif;font-size:20px;letter-spacing:-0.02em;white-space:nowrap}
-.boutique-card .add-btn{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:10px 14px;border:1px solid var(--ink);transition:all 0.35s;white-space:nowrap;background:var(--ink);color:var(--paper);border-radius:2px;flex-shrink:0}
+.boutique-card .card-body{padding:18px 16px 16px;display:flex;flex-direction:column;flex:1}
+.boutique-card .name{font-family:'Fraunces',serif;font-style:italic;font-size:16px;line-height:1.3;margin-bottom:8px;color:var(--ink)}
+.boutique-card .desc{font-size:12px;color:oklch(0.35 0.02 60);line-height:1.5;margin-bottom:auto;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;padding-bottom:14px}
+.boutique-card .card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:14px;border-top:1px solid oklch(0.72 0.12 75 / 0.25)}
+.boutique-card .price{font-family:'Fraunces',serif;font-size:20px;letter-spacing:-0.02em;white-space:nowrap;color:var(--ink)}
+.boutique-card .add-btn{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:10px 14px;border:1px solid var(--ink);transition:all 0.35s;white-space:nowrap;background:var(--ink);color:#fff;border-radius:2px;flex-shrink:0;font-weight:500}
 .boutique-card .add-btn:hover{background:transparent;color:var(--ink)}
 
 /* ─── CART ─── */
