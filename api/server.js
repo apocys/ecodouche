@@ -87,67 +87,25 @@ const seedProducts = [
     stock: 250, featured: 1
   },
   {
-    id: 2, sku: 'PED-RECHARGE',
-    name: 'Recharge de billes',
-    description: 'Sachet de recharge de pierres naturelles (tourmaline, germanium, argile grise). Durée 2 ans.',
+    id: 5, sku: 'PED-TOURMALINE',
+    name: 'Billes de Tourmaline',
+    description: 'Pierre naturelle purifiante — adoucit l\'eau et élimine le chlore. Lot de recharge compatible Power Eco-Douche.',
     price: 9.90, category: 'accessoire', image: '/img/POWER_ECO_DOUCHE_TOURMALINE.jpg',
     stock: 180, featured: 0
   },
   {
-    id: 3, sku: 'PED-FLEXIBLE',
-    name: 'Flexible de douche',
-    description: 'Flexible universel compatible avec la douchette Power Eco-Douche. Longueur 1.5m. Anti-torsion.',
-    price: 14.90, category: 'accessoire', image: '/img/product-1.png',
-    stock: 200, featured: 0
+    id: 6, sku: 'PED-GERMANIUM',
+    name: 'Billes de Germanium',
+    description: 'Pierre naturelle revitalisante — apaise la peau et stimule la micro-circulation. Lot de recharge.',
+    price: 9.90, category: 'accessoire', image: '/img/POWER_ECO_DOUCHE_GERMANIUM.jpg',
+    stock: 150, featured: 0
   },
   {
-    id: 4, sku: 'PED-TAPIS',
-    name: 'Tapis de bains nouvelle génération',
-    description: 'Tapis de bain antidérapant, séchage rapide, traité anti-bactérien.',
-    price: 19.90, category: 'accessoire', image: '/img/product-3.png',
-    stock: 120, featured: 0
-  },
-  {
-    id: 3529, sku: 'BT-NOIR',
-    name: 'Enceinte Bluetooth (noire)',
-    description: 'Enceinte Bluetooth étanche pour salle de bain. Compatible tous appareils.',
-    price: 12.00, category: 'enceinte-bluetooth', image: '/img/product-4.png',
-    stock: 80, featured: 0
-  },
-  {
-    id: 3509, sku: 'BT-ROSE',
-    name: 'Enceinte Bluetooth (rose)',
-    description: 'Enceinte Bluetooth étanche pour salle de bain. Compatible tous appareils.',
-    price: 12.00, category: 'enceinte-bluetooth', image: '/img/product-4.png',
-    stock: 60, featured: 0
-  },
-  {
-    id: 3507, sku: 'BT-BLEU',
-    name: 'Enceinte Bluetooth (bleu)',
-    description: 'Enceinte Bluetooth étanche pour salle de bain. Compatible tous appareils.',
-    price: 12.00, category: 'enceinte-bluetooth', image: '/img/product-4.png',
-    stock: 65, featured: 0
-  },
-  {
-    id: 3505, sku: 'BT-JAUNE',
-    name: 'Enceinte Bluetooth (jaune)',
-    description: 'Enceinte Bluetooth étanche pour salle de bain. Compatible tous appareils.',
-    price: 12.00, category: 'enceinte-bluetooth', image: '/img/product-4.png',
-    stock: 55, featured: 0
-  },
-  {
-    id: 3503, sku: 'BT-VERT',
-    name: 'Enceinte Bluetooth (vert)',
-    description: 'Enceinte Bluetooth étanche pour salle de bain. Compatible tous appareils.',
-    price: 12.00, category: 'enceinte-bluetooth', image: '/img/product-4.png',
-    stock: 70, featured: 0
-  },
-  {
-    id: 3501, sku: 'BT-BLANC',
-    name: 'Enceinte Bluetooth (blanc)',
-    description: 'Enceinte Bluetooth étanche pour salle de bain. Compatible tous appareils.',
-    price: 12.00, category: 'enceinte-bluetooth', image: '/img/product-4.png',
-    stock: 75, featured: 0
+    id: 7, sku: 'PED-ARGILE',
+    name: 'Billes d\'Argile Grise',
+    description: 'Pierre naturelle absorbante — capte impuretés et métaux lourds pour une eau plus saine.',
+    price: 9.90, category: 'accessoire', image: '/img/POWER_ECO_DOUCHE_ARGILE_GRISE.jpg',
+    stock: 160, featured: 0
   }
 ];
 const insertProduct = db.prepare(`
@@ -155,6 +113,9 @@ const insertProduct = db.prepare(`
   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 `);
 const seedTx = db.transaction(() => {
+  // Clean out any legacy/fake products not in our seed list
+  const validIds = seedProducts.map(p => p.id);
+  db.prepare(`DELETE FROM products WHERE id NOT IN (${validIds.join(',')})`).run();
   for (const p of seedProducts) {
     insertProduct.run(p.id, p.sku, p.name, p.description, p.price, p.category, p.image, p.stock, p.featured);
   }
@@ -330,7 +291,7 @@ fastify.get('/api/ecodouche/social/videos', async () => {
       title: 'Économie d\'eau — 50% de réduction',
       platform: 'TikTok',
       caption: '🚿 Économisez 50% d\'eau sans effort ! #ecologie #salledebain #economie',
-      thumbnail: '/img/product-1.png',
+      thumbnail: '/img/DOUCHETTE_DUO_POWER_ECO_DOUCHE.jpg',
       video_url: null,
       duration: null,
     },
@@ -339,7 +300,7 @@ fastify.get('/api/ecodouche/social/videos', async () => {
       title: 'Pierres naturelles — 3 bienfaits',
       platform: 'Instagram',
       caption: '✨ Découvrez les 3 pierres naturelles qui transforment votre eau ! #naturel',
-      thumbnail: '/img/product-2.png',
+      thumbnail: '/img/POWER_ECO_DOUCHE_TOURMALINE.jpg',
       video_url: null,
       duration: null,
     },
@@ -348,7 +309,7 @@ fastify.get('/api/ecodouche/social/videos', async () => {
       title: 'Challenge 30 jours',
       platform: 'TikTok',
       caption: '🌿 Pourquoi les Français adoptent cette douchette révolutionnaire ? #viral',
-      thumbnail: '/img/product-3.png',
+      thumbnail: '/img/POWER_ECO_DOUCHE_GERMANIUM.jpg',
       video_url: null,
       duration: null,
     }

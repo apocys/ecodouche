@@ -15,8 +15,8 @@
   --deep:oklch(0.14 0.025 215);
   --water:oklch(0.52 0.08 210);
   --surface:oklch(0.92 0.008 200);
-  --mist:oklch(0.88 0.015 195);
-  --glacier:oklch(0.80 0.04 200);
+  --mist:oklch(0.92 0.015 195);
+  --glacier:oklch(0.88 0.04 200);
   --stone:oklch(0.55 0.02 80);
   --sun:oklch(0.82 0.12 80);
   --deep-text:oklch(0.95 0.01 210);
@@ -79,11 +79,11 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
 .stone-front img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.6;filter:saturate(0.7)}
 .stone-front .label{position:relative;z-index:1}
 .stone-front .label h3{font-family:'Clash Display',sans-serif;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:600;margin-bottom:4px}
-.stone-front .label .sub{font-size:13px;opacity:0.6}
+.stone-front .label .sub{font-size:13px;opacity:0.85}
 .stone-back{transform:rotateY(180deg);background:var(--water);color:var(--deep);padding:clamp(24px,3vw,40px);justify-content:center}
 .stone-back h3{font-family:'Clash Display',sans-serif;font-size:clamp(1.3rem,2vw,2rem);font-weight:600;margin-bottom:16px}
 .stone-back p{font-size:15px;line-height:1.7;opacity:0.8}
-.stone-back .close-hint{margin-top:24px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.5}
+.stone-back .close-hint{margin-top:24px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.8}
 .stone-card:hover .stone-inner{transform:translateY(-6px)}
 .stone-card.flipped:hover .stone-inner{transform:rotateY(180deg) translateY(-6px)}
 
@@ -106,7 +106,7 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
 .product-tile{position:relative;background:oklch(0.18 0.02 210);border:1px solid oklch(0.52 0.08 210 / 0.12);overflow:hidden;transition:transform 0.4s cubic-bezier(.25,.1,.25,1),border-color 0.4s;cursor:pointer}
 .product-tile:hover{transform:translateY(-8px);border-color:var(--water)}
 .product-tile:hover~.product-tile{opacity:0.5}
-.product-tile img{width:100%;aspect-ratio:1;object-fit:cover;opacity:0.8;transition:opacity 0.4s}
+.product-tile img{width:100%;aspect-ratio:1;object-fit:cover;opacity:0.9;transition:opacity 0.4s}
 .product-tile:hover img{opacity:1}
 .product-tile .info{padding:20px}
 .product-tile .info .n{font-family:'Clash Display',sans-serif;font-size:15px;font-weight:500;margin-bottom:4px}
@@ -127,23 +127,23 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
 .cart-item img{width:56px;height:56px;object-fit:cover;border-radius:4px}
 .cart-item .info{flex:1}
 .cart-item .info .n{font-family:'Clash Display',sans-serif;font-size:14px;font-weight:500}
-.cart-item .info .p{font-size:13px;opacity:0.5;margin-top:2px}
+.cart-item .info .p{font-size:13px;opacity:0.75;margin-top:2px}
 .cart-qty{display:flex;gap:4px}
 .cart-qty button{width:30px;height:30px;border:1px solid oklch(0.52 0.08 210 / 0.3);border-radius:4px;color:var(--deep-text);display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.2s}
 .cart-qty button:hover{background:var(--water);color:var(--deep)}
 .cart-total-area{margin-top:24px;padding-top:16px;border-top:1px solid oklch(0.52 0.08 210 / 0.3)}
-.cart-total-area .row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;opacity:0.6}
+.cart-total-area .row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;opacity:0.8}
 .cart-total-area .total-row{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:600;padding-top:12px;margin-top:8px;border-top:1px solid var(--water);opacity:1}
 .btn-water{width:100%;padding:16px;background:var(--water);color:var(--deep);font-family:'Clash Display',sans-serif;font-weight:600;font-size:15px;border-radius:8px;margin-top:16px;transition:opacity 0.3s}
 .btn-water:hover{opacity:0.85}
 .checkout-form input,.checkout-form textarea{width:100%;padding:14px 16px;border:1px solid oklch(0.52 0.08 210 / 0.2);border-radius:6px;background:oklch(0.18 0.02 210);color:var(--deep-text);font:inherit;font-size:14px;margin-bottom:12px;outline:none;transition:border-color 0.3s}
 .checkout-form input:focus,.checkout-form textarea:focus{border-color:var(--water)}
-.checkout-form input::placeholder{color:var(--deep-text);opacity:0.3}
+.checkout-form input::placeholder{color:var(--deep-text);opacity:0.55}
 
 /* ─── TIKTOK STUDIO ─── */
 .studio{background:var(--deep);position:relative}
 .phone-mock{width:200px;height:355px;border:3px solid oklch(0.52 0.08 210 / 0.3);border-radius:24px;margin:0 auto;position:relative;overflow:hidden;background:oklch(0.1 0.02 215)}
-.phone-mock .screen{position:absolute;inset:8px;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Clash Display',sans-serif;font-size:14px;text-align:center;color:var(--surface);opacity:0.7}
+.phone-mock .screen{position:absolute;inset:8px;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Clash Display',sans-serif;font-size:14px;text-align:center;color:var(--surface);opacity:0.85}
 .phone-mock .shimmer{position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,oklch(0.52 0.08 210 / 0.1) 50%,transparent 60%);animation:shimmer 2s infinite;opacity:0}
 .phone-mock.loading .shimmer{opacity:1}
 @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
@@ -171,7 +171,7 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
 /* ─── FOOTER ─── */
 .footer{border-top:1px solid oklch(0.52 0.08 210 / 0.1);padding:48px 0}
 .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
-.footer-copy{font-size:13px;opacity:0.4}
+.footer-copy{font-size:13px;opacity:0.7}
 .footer-nav{display:flex;gap:24px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.4}
 .footer-nav a:hover{opacity:1}
 .footer-tag{font-family:'Clash Display',sans-serif;font-size:13px;opacity:0.3}
@@ -362,7 +362,7 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
       </div>
     </div>
     <div class="product-price reveal">
-      <div style="font-size:14px;opacity:0.5;margin-bottom:8px">À partir de</div>
+      <div style="font-size:14px;opacity:0.8;margin-bottom:8px">À partir de</div>
       <span class="amt" x-data="{val:0}" x-init="gsap.to($data,{val:29.90,duration:1.5,ease:'power3.out',onUpdate:()=>$el.querySelector('.v').textContent=val.toFixed(2)})" ><span class="v">0.00</span></span>
       <span class="eur">€</span>
       <div style="margin-top:16px">
