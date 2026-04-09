@@ -4,14 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>POWER ECO-DOUCHE — MOINS D'EAU. PLUS DE VIE.</title>
+<meta name="description" content="Douchette éco-responsable Power Eco-Douche. 50% d'économie d'eau grâce aux pierres naturelles thérapeutiques. Design français brut et engagé.">
+<meta property="og:title" content="POWER ECO-DOUCHE — MOINS D'EAU. PLUS DE VIE.">
+<meta property="og:description" content="50% d'économie d'eau. Pierres naturelles. Design français brut et engagé.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ecodouche.spawnkit.ai/v2/">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
 <style>
 :root{
   --concrete:oklch(0.91 0.008 95);
@@ -68,8 +74,8 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 .faits{background:var(--earth);color:var(--concrete);position:relative}
 .faits .section-num{opacity:0.15;color:var(--concrete)}
 .faits-table{border-top:1px solid var(--concrete)}
-.fait-row{display:grid;grid-template-columns:80px 140px 1fr 2fr;gap:24px;align-items:center;padding:32px 0;border-bottom:1px solid var(--concrete);transition:background 0.2s,color 0.2s,padding 0.2s;cursor:default}
-.fait-row:hover{background:var(--concrete);color:var(--earth);padding-left:24px;padding-right:24px}
+.fait-row{display:grid;grid-template-columns:80px 140px 1fr 2fr;gap:24px;align-items:center;padding:32px 0;border-bottom:1px solid var(--concrete);transition:background 0.2s,color 0.2s,transform 0.2s;cursor:default}
+.fait-row:hover{background:var(--concrete);color:var(--earth);transform:translateX(12px)}
 .fait-row .num{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(1.5rem,2.5vw,2rem);opacity:0.4}
 .fait-row .big{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,5rem);line-height:1;letter-spacing:-0.03em}
 .fait-row .title{font-family:'Archivo',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(0.9rem,1.4vw,1.2rem);letter-spacing:0.04em}
@@ -107,8 +113,8 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 .cat-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px}
 .cat-header h2{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(3rem,10vw,12rem);line-height:0.85;text-transform:uppercase;letter-spacing:-0.05em}
 .cat-list{border-top:2px solid var(--ink)}
-.cat-row{display:grid;grid-template-columns:100px 60px 1fr auto auto;gap:24px;align-items:center;padding:24px 0;border-bottom:1px solid var(--ink);transition:all 0.15s;cursor:pointer}
-.cat-row:hover{background:var(--ink);color:var(--concrete);padding-left:24px;padding-right:24px}
+.cat-row{display:grid;grid-template-columns:100px 60px 1fr auto auto;gap:24px;align-items:center;padding:24px 0;border-bottom:1px solid var(--ink);transition:background 0.15s,color 0.15s,transform 0.15s;cursor:pointer}
+.cat-row:hover{background:var(--ink);color:var(--concrete);transform:translateX(12px)}
 .cat-row:hover .cat-btn{background:var(--concrete);color:var(--ink);border-color:var(--concrete)}
 .cat-row .thumb{width:100px;height:100px;object-fit:cover;filter:contrast(1.05)}
 .cat-row .num{font-family:'Space Grotesk',monospace;font-weight:700;font-size:14px;letter-spacing:0.05em;opacity:0.4}
@@ -296,6 +302,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
   </template>
 </div>
 
+<main id="top">
 <!-- HERO -->
 <section class="hero pad-x">
   <div class="hero-meta">
@@ -425,14 +432,14 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
       <div class="spec-row reveal"><span class="label">Prix</span><span class="value" style="font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(1.5rem,3vw,2.2rem);letter-spacing:-0.02em">€29,90</span></div>
       <div class="objet-cta reveal">
         <button class="btn-brutal" @click="addToCart(products.find(p=>p.id===1))">AJOUTER AU PANIER →</button>
-        <div class="stock-dot">247 EN STOCK</div>
+        <div class="stock-dot" x-text="(products[0]?.stock || 250) + ' EN STOCK'">EN STOCK</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- 05 CATALOGUE -->
-<section class="pad-x pad-y" style="position:relative">
+<section id="boutique" class="pad-x pad-y" style="position:relative">
   <div class="section-num">05</div>
   <div class="max-w">
     <div class="cat-header">
@@ -505,7 +512,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 </section>
 
 <!-- 07 ENTRETIEN -->
-<section class="pad-x pad-y" style="position:relative">
+<section id="entretien" class="pad-x pad-y" style="position:relative">
   <div class="section-num">07</div>
   <div class="max-w">
     <div class="meta reveal" style="margin-bottom:32px">07 / ENTRETIEN</div>
@@ -533,7 +540,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 </section>
 
 <!-- 08 CONTACT -->
-<section class="pad-x pad-y" style="position:relative;background:var(--clay)">
+<section id="contact" class="pad-x pad-y" style="position:relative;background:var(--clay)">
   <div class="section-num">08</div>
   <div class="max-w">
     <div class="meta reveal" style="margin-bottom:32px">08 / CONTACT</div>
@@ -557,16 +564,16 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 </section>
 
 <!-- FOOTER -->
+</main>
 <footer class="footer pad-x">
   <div class="max-w">
     <div class="footer-top">
       <div class="copy">© 2026<br>POWER ECO-DOUCHE<br>ENTREPRISE FRANÇAISE</div>
       <div class="nav">
-        <a href="#">ACCUEIL</a>
-        <a href="#">BOUTIQUE</a>
-        <a href="#">ENTRETIEN</a>
-        <a href="#">CONTACT</a>
-        <a href="#">CGV</a>
+        <a href="#top">ACCUEIL</a>
+        <a href="#boutique">BOUTIQUE</a>
+        <a href="#entretien">ENTRETIEN</a>
+        <a href="#contact">CONTACT</a>
       </div>
       <div class="pay">VISA · MC · PAYPAL<br>GARANTIE 2 ANS</div>
     </div>

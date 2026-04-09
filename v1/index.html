@@ -4,14 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>POWER ECO-DOUCHE — L'eau, simplement réinventée</title>
+<meta name="description" content="Douchette française éco-responsable aux pierres naturelles. Économisez 50% d'eau. Tourmaline, germanium, argile grise. Raccord universel, fabrication française.">
+<meta property="og:title" content="POWER ECO-DOUCHE — L'eau, simplement réinventée">
+<meta property="og:description" content="Douchette française éco-responsable aux pierres naturelles. Économisez 50% d'eau.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ecodouche.spawnkit.ai/v1/">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
 <style>
 :root{
   --ink:oklch(0.18 0.015 60);
@@ -261,6 +267,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
   </template>
 </div>
 
+<main>
 <!-- HERO -->
 <section class="hero pad-x">
   <div class="hero-ticker">TOURMALINE · GERMANIUM · ARGILE GRISE · ECO · FRANCE · 2026</div>
@@ -354,7 +361,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 </section>
 
 <!-- 04 — BOUTIQUE -->
-<section class="pad-x pad-section" style="background:var(--paper)">
+<section id="boutique" class="pad-x pad-section" style="background:var(--paper)">
   <div class="max-w">
     <div class="chapter-num reveal">04 — Boutique</div>
     <div class="gold-rule" style="margin:16px 0 48px"></div>
@@ -372,6 +379,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
         </div>
       </div>
     </template>
+    </div>
   </div>
 </section>
 
@@ -404,7 +412,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 </section>
 
 <!-- 06 — CONSEILS -->
-<section class="pad-x pad-section conseils-bg" style="background:var(--stone)">
+<section id="conseils" class="pad-x pad-section conseils-bg" style="background:var(--stone)">
   <div class="max-w">
     <div class="chapter-num reveal">06 — Conseils</div>
     <div class="gold-rule" style="margin:16px 0 48px"></div>
@@ -422,7 +430,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 </section>
 
 <!-- 07 — CONTACT -->
-<section class="pad-x pad-section">
+<section id="contact" class="pad-x pad-section">
   <div class="max-w">
     <div class="chapter-num reveal">07 — Contact</div>
     <div class="gold-rule" style="margin:16px 0 48px"></div>
@@ -448,6 +456,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 </section>
 
 <!-- FOOTER -->
+</main>
 <footer class="footer pad-x">
   <div class="max-w footer-inner">
     <div class="footer-copy">
@@ -455,10 +464,10 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
       © 2026 Power Eco-Douche · Entreprise française
     </div>
     <div class="footer-links">
-      <a href="#" class="link-draw">Accueil</a>
-      <a href="#" class="link-draw">Boutique</a>
-      <a href="#" class="link-draw">Conseils</a>
-      <a href="#" class="link-draw">Contact</a>
+      <a href="#manifeste" class="link-draw">Manifeste</a>
+      <a href="#boutique" class="link-draw">Boutique</a>
+      <a href="#conseils" class="link-draw">Conseils</a>
+      <a href="#contact" class="link-draw">Contact</a>
     </div>
     <div class="footer-badges">
       Visa · Mastercard · PayPal · Garantie 2 ans

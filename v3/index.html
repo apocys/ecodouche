@@ -4,12 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>POWER ECO-DOUCHE — Plongez dans l'expérience</title>
+<meta name="description" content="Douchette éco-responsable Power Eco-Douche. Économisez 50% d'eau avec nos pierres naturelles thérapeutiques. Expérience immersive, fabrication française.">
+<meta property="og:title" content="POWER ECO-DOUCHE — Plongez dans l'expérience">
+<meta property="og:description" content="50% d'économie d'eau. Pierres naturelles. Une expérience immersive.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ecodouche.spawnkit.ai/v3/">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:,">
 <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
 <style>
 :root{
   --deep:oklch(0.14 0.025 215);
@@ -23,13 +29,15 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:auto}
-body{background:var(--deep);color:var(--deep-text);font-family:'General Sans',sans-serif;font-size:18px;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none}
+body{background:var(--deep);color:var(--deep-text);font-family:'General Sans',sans-serif;font-size:18px;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.js-ready{cursor:none}
 @media(max-width:768px){body{cursor:auto}}
 ::selection{background:var(--water);color:var(--deep)}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
-button{cursor:none;border:none;background:none;font:inherit;color:inherit}
-@media(max-width:768px){button{cursor:auto}}
+button{border:none;background:none;font:inherit;color:inherit}
+body.js-ready button{cursor:none}
+@media(max-width:768px){body.js-ready button{cursor:auto}}
 
 /* CUSTOM CURSOR */
 .cursor{position:fixed;width:20px;height:20px;border:2px solid var(--water);border-radius:50%;pointer-events:none;z-index:10000;transition:width 0.3s,height 0.3s,border-color 0.3s,margin 0.3s;margin-left:-10px;margin-top:-10px;mix-blend-mode:difference}
@@ -41,6 +49,11 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
 .display{font-family:'Clash Display',sans-serif}
 .caps{text-transform:uppercase;letter-spacing:0.12em;font-weight:500}
 .meta{font-family:'General Sans',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500}
+
+/* CTA BUTTON */
+.btn-glow{padding:16px 40px;background:var(--water);color:var(--deep);font-family:'Clash Display',sans-serif;font-weight:600;font-size:15px;letter-spacing:0.06em;border-radius:4px;transition:all 0.3s ease;position:relative;overflow:hidden}
+.btn-glow:hover{background:var(--sun);transform:translateY(-2px);box-shadow:0 8px 32px rgba(82,160,200,0.4)}
+.btn-glow:active{transform:translateY(0)}
 
 /* LAYOUT */
 .pad-x{padding-left:clamp(24px,5vw,80px);padding-right:clamp(24px,5vw,80px)}
@@ -172,11 +185,13 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
   .contact-bg{display:none}
   .boutique-grid{grid-template-columns:1fr 1fr}
   .callout{display:none}
+  .video-grid-v3{grid-template-columns:1fr 1fr!important}
 }
 @media(max-width:600px){
   .hero-headline{font-size:clamp(2.5rem,12vw,5rem)}
   .boutique-grid{grid-template-columns:1fr}
   .product-tile .add-overlay{opacity:1}
+  .video-grid-v3{grid-template-columns:1fr!important}
 }
 @media(prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none}
@@ -246,6 +261,7 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
   </template>
 </div>
 
+<main>
 <!-- HERO -->
 <section class="hero" id="hero">
   <canvas id="waterCanvas"></canvas>
@@ -257,7 +273,7 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
   </nav>
   <div class="hero-content pad-x">
     <h1 class="hero-headline">
-      <span class="word"><span>Buvez</span></span> <span class="word"><span>la</span></span><br>
+      <span class="word"><span>Sentez</span></span> <span class="word"><span>la</span></span><br>
       <span class="word"><span>différence.</span></span>
     </h1>
     <p class="hero-sub">50% d'eau. 100% nature. Fabriqué en France.</p>
@@ -382,7 +398,7 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
   <div class="max-w">
     <div class="meta reveal" style="opacity:0.5;margin-bottom:32px">VIDÉOS</div>
     <h2 class="display reveal" style="font-size:clamp(2rem,5vw,4rem);font-weight:600;margin-bottom:48px">Nos campagnes</h2>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(12px,2vw,24px)">
+    <div class="video-grid-v3" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(12px,2vw,24px)">
       <template x-for="v in videos" :key="v.id">
         <a :href="v.video_url || '#'" target="_blank" rel="noopener" class="reveal" style="aspect-ratio:9/16;background:oklch(0.14 0.025 215);border:1px solid oklch(0.52 0.08 210 / 0.15);overflow:hidden;position:relative;display:block;transition:transform 0.4s cubic-bezier(.25,.1,.25,1),border-color 0.4s;text-decoration:none" onmouseover="this.style.transform='translateY(-8px)';this.style.borderColor='oklch(0.52 0.08 210)';this.querySelector('video')?.play()" onmouseout="this.style.transform='';this.style.borderColor='oklch(0.52 0.08 210 / 0.15)';this.querySelector('video')?.pause()">
           <video :src="v.video_url" :poster="v.thumbnail" preload="metadata" muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block"></video>
@@ -441,6 +457,7 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
 </section>
 
 <!-- FOOTER -->
+</main>
 <footer class="footer pad-x">
   <div class="max-w footer-inner">
     <div class="footer-copy">
@@ -448,7 +465,7 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
       © 2026 Power Eco-Douche
     </div>
     <div class="footer-nav">
-      <a href="#">Accueil</a><a href="#boutique">Boutique</a><a href="#pierres">Pierres</a><a href="#contact">Contact</a>
+      <a href="#hero">Accueil</a><a href="#boutique">Boutique</a><a href="#pierres">Pierres</a><a href="#contact">Contact</a>
     </div>
     <div class="footer-tag">Fait en France avec ♥</div>
   </div>
@@ -492,9 +509,13 @@ function shop(){return{
 }}
 
 document.addEventListener('DOMContentLoaded',()=>{
+  document.body.classList.add('js-ready');
   const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(prefersReduced){
     document.querySelectorAll('.reveal').forEach(el=>{el.style.opacity=1;el.style.transform='none'});
+    document.querySelectorAll('.hero-sub, .callout').forEach(el=>{el.style.opacity=1});
+    const priceEl=document.querySelector('.amt .v');
+    if(priceEl) priceEl.textContent='29.90';
     return;
   }
 
