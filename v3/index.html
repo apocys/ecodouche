@@ -140,20 +140,6 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
 .checkout-form input:focus,.checkout-form textarea:focus{border-color:var(--water)}
 .checkout-form input::placeholder{color:var(--deep-text);opacity:0.55}
 
-/* ─── TIKTOK STUDIO ─── */
-.studio{background:var(--deep);position:relative}
-.phone-mock{width:200px;height:355px;border:3px solid oklch(0.52 0.08 210 / 0.3);border-radius:24px;margin:0 auto;position:relative;overflow:hidden;background:oklch(0.1 0.02 215)}
-.phone-mock .screen{position:absolute;inset:8px;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Clash Display',sans-serif;font-size:14px;text-align:center;color:var(--surface);opacity:0.85}
-.phone-mock .shimmer{position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,oklch(0.52 0.08 210 / 0.1) 50%,transparent 60%);animation:shimmer 2s infinite;opacity:0}
-.phone-mock.loading .shimmer{opacity:1}
-@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-.studio-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:clamp(32px,5vw,80px);align-items:center}
-.studio-controls h3{font-family:'Clash Display',sans-serif;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:600;margin-bottom:24px}
-.studio-controls textarea{width:100%;background:oklch(0.18 0.02 210);border:1px solid oklch(0.52 0.08 210 / 0.2);border-radius:8px;color:var(--deep-text);padding:16px;font:inherit;font-size:14px;resize:vertical;min-height:120px;outline:none;transition:border-color 0.3s}
-.studio-controls textarea:focus{border-color:var(--water)}
-.btn-glow{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--water);color:var(--deep);font-family:'Clash Display',sans-serif;font-weight:600;font-size:15px;border-radius:8px;margin-top:16px;transition:all 0.3s;box-shadow:0 0 0 0 oklch(0.52 0.08 210 / 0.3)}
-.btn-glow:hover{box-shadow:0 0 32px 8px oklch(0.52 0.08 210 / 0.25)}
-
 /* ─── CONTACT ─── */
 .contact{position:relative;overflow:hidden}
 .contact-bg{position:absolute;left:0;top:0;width:50%;height:100%;background:var(--water);clip-path:polygon(0 0,80% 0,60% 100%,0 100%);z-index:0;opacity:0.15}
@@ -182,8 +168,6 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
 /* ─── RESPONSIVE ─── */
 @media(max-width:900px){
   .stones-grid{grid-template-columns:1fr}
-  .studio-grid{grid-template-columns:1fr}
-  .phone-mock{margin-bottom:32px}
   .contact-grid{grid-template-columns:1fr}
   .contact-bg{display:none}
   .boutique-grid{grid-template-columns:1fr 1fr}
@@ -393,39 +377,26 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
   </div>
 </section>
 
-<!-- TIKTOK STUDIO -->
-<section class="studio pad-x pad-y">
+<!-- VIDÉOS SOCIALES -->
+<section class="pad-x pad-y" style="background:var(--deep)">
   <div class="max-w">
-    <div class="meta reveal" style="opacity:0.5;margin-bottom:32px">STUDIO SOCIAL</div>
-    <div class="studio-grid">
-      <div style="display:flex;flex-direction:column;align-items:center" class="reveal">
-        <div class="phone-mock" :class="{'loading':heygenLoading}">
-          <div class="screen" style="flex-direction:column;gap:8px"><div style="font-size:32px">🎬</div><div>Vidéo 9:16</div><div style="font-size:11px;opacity:0.4">Power Eco-Douche</div></div>
-          <div class="shimmer"></div>
-        </div>
-        <div style="display:flex;gap:24px;margin-top:24px">
-          <template x-for="v in videos" :key="v.id">
-            <a :href="v.video_url || '#'" target="_blank" rel="noopener" style="width:60px;height:106px;overflow:hidden;border:1px solid oklch(0.52 0.08 210 / 0.3);border-radius:6px;display:block;position:relative;transition:transform 0.3s,border-color 0.3s" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='oklch(0.72 0.15 210)'" onmouseout="this.style.transform='';this.style.borderColor='oklch(0.52 0.08 210 / 0.3)'">
-              <video :src="v.video_url" :poster="v.thumbnail" muted loop playsinline autoplay style="width:100%;height:100%;object-fit:cover"></video>
-              <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);padding:3px 5px;font-size:8px;text-transform:uppercase;letter-spacing:0.05em;color:#fff" x-text="v.platform"></div>
-            </a>
-          </template>
-        </div>
-      </div>
-      <div class="studio-controls reveal">
-        <h3>Générez du contenu viral</h3>
-        <p style="opacity:0.5;margin-bottom:24px;font-size:15px">Écrivez un script et notre IA crée une vidéo prête pour TikTok et Instagram Reels.</p>
-        <textarea x-model="heygenScript" placeholder="Saviez-vous que cette douchette française économise 50% d'eau ? Découvrez Power Eco-Douche..."></textarea>
-        <button class="btn-glow" @click="generateVideo()" :disabled="heygenLoading">
-          <span x-text="heygenLoading ? 'Génération...' : '✨ Générer avec IA'"></span>
-        </button>
-        <p x-show="heygenMsg" style="margin-top:12px;font-size:13px;opacity:0.6" x-text="heygenMsg"></p>
-        <div style="margin-top:40px;display:flex;gap:32px">
-          <a href="https://www.facebook.com/powerecodouche" target="_blank" class="meta" style="opacity:0.5;transition:opacity 0.3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Facebook ↗</a>
-          <a href="https://www.instagram.com/powerecodouche_" target="_blank" class="meta" style="opacity:0.5;transition:opacity 0.3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Instagram ↗</a>
-          <a href="https://www.linkedin.com/company/powerecodouche/" target="_blank" class="meta" style="opacity:0.5;transition:opacity 0.3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">LinkedIn ↗</a>
-        </div>
-      </div>
+    <div class="meta reveal" style="opacity:0.5;margin-bottom:32px">VIDÉOS</div>
+    <h2 class="display reveal" style="font-size:clamp(2rem,5vw,4rem);font-weight:600;margin-bottom:48px">Nos campagnes</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(12px,2vw,24px)">
+      <template x-for="v in videos" :key="v.id">
+        <a :href="v.video_url || '#'" target="_blank" rel="noopener" class="reveal" style="aspect-ratio:9/16;background:oklch(0.14 0.025 215);border:1px solid oklch(0.52 0.08 210 / 0.15);overflow:hidden;position:relative;display:block;transition:transform 0.4s cubic-bezier(.25,.1,.25,1),border-color 0.4s;text-decoration:none" onmouseover="this.style.transform='translateY(-8px)';this.style.borderColor='oklch(0.52 0.08 210)';this.querySelector('video')?.play()" onmouseout="this.style.transform='';this.style.borderColor='oklch(0.52 0.08 210 / 0.15)';this.querySelector('video')?.pause()">
+          <video :src="v.video_url" :poster="v.thumbnail" preload="metadata" muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block"></video>
+          <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,0.75),transparent);padding:16px;color:#fff;z-index:2">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;opacity:0.7" x-text="v.platform"></div>
+            <div style="font-family:'Clash Display',sans-serif;font-size:14px;font-weight:500;margin-top:4px" x-text="v.title"></div>
+          </div>
+        </a>
+      </template>
+    </div>
+    <div style="margin-top:40px;display:flex;gap:32px">
+      <a href="https://www.facebook.com/powerecodouche" target="_blank" class="meta reveal" style="opacity:0.5;transition:opacity 0.3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Facebook ↗</a>
+      <a href="https://www.instagram.com/powerecodouche_" target="_blank" class="meta reveal" style="opacity:0.5;transition:opacity 0.3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Instagram ↗</a>
+      <a href="https://www.linkedin.com/company/powerecodouche/" target="_blank" class="meta reveal" style="opacity:0.5;transition:opacity 0.3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">LinkedIn ↗</a>
     </div>
   </div>
 </section>
@@ -489,7 +460,6 @@ function shop(){return{
   customer:{name:'',email:'',phone:'',address:''},
   orderLoading:false,orderMsg:'',
   contactForm:{name:'',email:'',message:''},contactLoading:false,contactMsg:'',
-  heygenScript:'',heygenLoading:false,heygenMsg:'',
   get cartCount(){return this.cart.reduce((s,i)=>s+i.qty,0)},
   get subtotal(){return this.cart.reduce((s,i)=>s+i.price*i.qty,0)},
   get total(){return this.subtotal+(this.subtotal>=50?0:4.90)},
@@ -519,12 +489,6 @@ function shop(){return{
     try{const r=await fetch('/api/ecodouche/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(this.contactForm)});const d=await r.json();this.contactMsg=d.message||'Envoyé !';if(d.ok)this.contactForm={name:'',email:'',message:''}}catch(e){this.contactMsg='Erreur réseau'}
     this.contactLoading=false;
   },
-  async generateVideo(){
-    if(!this.heygenScript||this.heygenScript.length<10)return;
-    this.heygenLoading=true;this.heygenMsg='';
-    try{const r=await fetch('/api/ecodouche/heygen/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({script:this.heygenScript})});const d=await r.json();this.heygenMsg=d.message||'En attente'}catch(e){this.heygenMsg='Erreur réseau'}
-    this.heygenLoading=false;
-  }
 }}
 
 document.addEventListener('DOMContentLoaded',()=>{
@@ -623,7 +587,11 @@ document.addEventListener('DOMContentLoaded',()=>{
     const revealObs = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed');revealObs.unobserve(e.target)}});
     },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
-    document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+    const observeAll=()=>document.querySelectorAll('.reveal:not(.revealed)').forEach(el=>revealObs.observe(el));
+    observeAll();
+    setTimeout(observeAll,100);setTimeout(observeAll,500);
+    new MutationObserver(()=>observeAll()).observe(document.body,{childList:true,subtree:true});
+    setTimeout(()=>document.querySelectorAll('.reveal:not(.revealed)').forEach(el=>el.classList.add('revealed')),2000);
   }else{
     document.querySelectorAll('.reveal').forEach(el=>el.classList.add('revealed'));
   }
