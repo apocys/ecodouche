@@ -151,12 +151,16 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 .viral .section-num{opacity:0.12;color:var(--concrete)}
 .viral-header{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(3rem,10vw,12rem);line-height:0.85;text-transform:uppercase;letter-spacing:-0.05em;margin-bottom:48px}
 .viral-header span{display:block}
-.viral-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:48px;margin-top:32px}
-.video-tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.video-tile{aspect-ratio:9/16;background:var(--ink);border:1px solid var(--concrete);overflow:hidden;position:relative;transition:transform 0.2s}
-.video-tile:hover{transform:translateY(-4px)}
-.video-tile img{width:100%;height:100%;object-fit:cover;opacity:0.8}
-.video-tile .tag{position:absolute;bottom:8px;left:8px;background:var(--concrete);color:var(--ink);padding:4px 8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:9px;letter-spacing:0.1em;text-transform:uppercase}
+.viral-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;margin-top:32px;align-items:start}
+.video-tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.video-tile{aspect-ratio:9/16;background:var(--ink);border:1px solid var(--concrete);overflow:hidden;position:relative;transition:transform 0.25s cubic-bezier(0.25,0.1,0.25,1);cursor:pointer}
+.video-tile:hover{transform:translateY(-6px) scale(1.02)}
+.video-tile video{width:100%;height:100%;object-fit:cover;display:block}
+.video-tile img{width:100%;height:100%;object-fit:cover}
+.video-tile .tag{position:absolute;bottom:10px;left:10px;background:var(--concrete);color:var(--ink);padding:5px 10px;font-family:'Archivo',sans-serif;font-weight:700;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;z-index:2;pointer-events:none}
+.video-tile .tile-title{position:absolute;top:10px;left:10px;right:10px;background:rgba(0,0,0,0.6);color:var(--concrete);padding:6px 10px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;z-index:2;line-height:1.3;pointer-events:none;backdrop-filter:blur(4px)}
+.video-tile .play-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;background:var(--concrete);color:var(--ink);border-radius:50%!important;display:flex;align-items:center;justify-content:center;font-size:18px;opacity:0;transition:opacity 0.2s;z-index:2;pointer-events:none}
+.video-tile:hover .play-icon{opacity:0.9}
 .viral-controls label{display:block;font-family:'Archivo',sans-serif;font-weight:700;text-transform:uppercase;font-size:12px;letter-spacing:0.08em;margin-bottom:12px;opacity:0.8}
 .viral-controls textarea{width:100%;background:var(--ink);color:var(--concrete);border:1px solid var(--concrete);padding:16px;font:inherit;font-size:14px;resize:vertical;min-height:120px;font-family:'Space Grotesk',monospace}
 .viral-controls .btn-viral{margin-top:16px;padding:18px 32px;background:var(--concrete);color:var(--moss);border:1px solid var(--concrete);font-family:'Archivo',sans-serif;font-weight:900;text-transform:uppercase;font-size:14px;letter-spacing:0.05em;transition:all 0.15s}
@@ -467,21 +471,23 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
     <div class="viral-grid">
       <div class="video-tiles reveal">
         <template x-for="v in videos" :key="v.id">
-          <div class="video-tile">
-            <img :src="v.thumbnail" :alt="v.caption">
+          <div class="video-tile" @mouseenter="$el.querySelector('video')?.play()" @mouseleave="$el.querySelector('video')?.pause()">
+            <video :src="v.video_url" :poster="v.thumbnail" preload="metadata" muted loop playsinline></video>
+            <div class="tile-title" x-text="v.title"></div>
             <div class="tag" x-text="v.platform"></div>
+            <div class="play-icon">▶</div>
           </div>
         </template>
       </div>
-      <div class="viral-controls reveal" style="display:flex;flex-direction:column;gap:24px" x-data="{videos:[]}" x-init="fetch('/api/ecodouche/social/videos').then(r=>r.json()).then(d=>videos=d.videos||[])">
+      <div class="viral-controls reveal" style="display:flex;flex-direction:column;gap:24px">
         <label>CAMPAGNE POWER ECO-DOUCHE</label>
         <div style="font-family:'Space Grotesk',monospace;font-size:13px;line-height:1.7;opacity:0.7">CONTENU PRODUIT EN PARTENARIAT AVEC DES CRÉATEURS FRANÇAIS. FORMAT 9:16 POUR TIKTOK ET INSTAGRAM REELS.</div>
         <div style="display:flex;flex-direction:column;gap:16px">
           <template x-for="(v,i) in videos" :key="v.id">
-            <a :href="v.video_url || '#'" target="_blank" rel="noopener" style="padding:16px;border:1px solid var(--concrete);display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:inherit;transition:background 0.2s" onmouseover="this.style.background='var(--concrete)';this.style.color='var(--paper)'" onmouseout="this.style.background='';this.style.color='inherit'">
+            <a :href="v.video_url || '#'" target="_blank" rel="noopener" style="padding:16px;border:1px solid var(--concrete);display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:inherit;transition:background 0.2s" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background=''">
               <div>
                 <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.05em"><span x-text="String(i+1).padStart(2,'0')"></span> / <span x-text="v.title"></span></div>
-                <div style="font-family:'Space Grotesk',monospace;font-size:11px;opacity:0.5;margin-top:4px"><span x-text="v.platform"></span> — <span x-text="v.duration || '—'"></span></div>
+                <div style="font-family:'Space Grotesk',monospace;font-size:11px;opacity:0.5;margin-top:4px"><span x-text="v.platform"></span> — <span x-text="v.duration || '—'"></span> — <span x-text="v.size_mb ? v.size_mb+'MB' : ''"></span></div>
               </div>
               <div style="font-family:'Archivo',sans-serif;font-weight:900;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;padding:6px 12px;border:1px solid var(--concrete)" x-text="v.video_url ? '▶ VOIR' : 'EN PRODUCTION'"></div>
             </a>

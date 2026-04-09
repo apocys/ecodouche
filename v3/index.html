@@ -405,9 +405,10 @@ button{cursor:none;border:none;background:none;font:inherit;color:inherit}
         </div>
         <div style="display:flex;gap:24px;margin-top:24px">
           <template x-for="v in videos" :key="v.id">
-            <div style="width:50px;height:88px;overflow:hidden;border:1px solid oklch(0.52 0.08 210 / 0.2);border-radius:6px">
-              <img :src="v.thumbnail" :alt="v.caption" style="width:100%;height:100%;object-fit:cover;opacity:0.6">
-            </div>
+            <a :href="v.video_url || '#'" target="_blank" rel="noopener" style="width:60px;height:106px;overflow:hidden;border:1px solid oklch(0.52 0.08 210 / 0.3);border-radius:6px;display:block;position:relative;transition:transform 0.3s,border-color 0.3s" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='oklch(0.72 0.15 210)'" onmouseout="this.style.transform='';this.style.borderColor='oklch(0.52 0.08 210 / 0.3)'">
+              <video :src="v.video_url" :poster="v.thumbnail" muted loop playsinline autoplay style="width:100%;height:100%;object-fit:cover"></video>
+              <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);padding:3px 5px;font-size:8px;text-transform:uppercase;letter-spacing:0.05em;color:#fff" x-text="v.platform"></div>
+            </a>
           </template>
         </div>
       </div>
