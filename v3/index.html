@@ -383,7 +383,7 @@ body.js-ready button{cursor:none}
     </div>
     <div class="product-price reveal">
       <div style="font-size:14px;opacity:0.8;margin-bottom:8px">À partir de</div>
-      <span class="amt" x-data="{val:0}" x-init="gsap.to($data,{val:29.90,duration:1.5,ease:'power3.out',onUpdate:()=>$el.querySelector('.v').textContent=val.toFixed(2)})" ><span class="v">0.00</span></span>
+      <span class="amt" x-data="{val:29.90}" x-init="$el.querySelector('.v').textContent=val.toFixed(2);const run=()=>{if(window.gsap){gsap.fromTo($data,{val:0},{val:29.90,duration:1.5,ease:'power3.out',onUpdate:()=>$el.querySelector('.v').textContent=val.toFixed(2)})}};if(window.gsap){run()}else{window.addEventListener('load',run,{once:true})}"><span class="v">29.90</span></span>
       <span class="eur">€</span>
       <div style="margin-top:16px">
         <button class="btn-glow" @click="addToCart(products.find(p=>p.id===1))">Ajouter au panier →</button>
