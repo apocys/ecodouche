@@ -9,7 +9,13 @@
 <meta property="og:description" content="50% d'économie d'eau. Pierres naturelles. Une expérience immersive.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ecodouche.spawnkit.ai/v3/">
+<meta property="og:image" content="https://ecodouche.spawnkit.ai/img/DOUCHETTE_DUO_POWER_ECO_DOUCHE.jpg">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Power Eco-Douche">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ecodouche.spawnkit.ai/img/DOUCHETTE_DUO_POWER_ECO_DOUCHE.jpg">
+<meta name="theme-color" content="#0d1d2e">
+<link rel="canonical" href="https://ecodouche.spawnkit.ai/v3/">
 <link rel="icon" href="data:,">
 <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
@@ -207,6 +213,18 @@ body.js-ready button{cursor:none}
   .reveal.revealed{opacity:1;transform:none}
 }
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none}}
+
+/* SKIP LINK (a11y) */
+.skip-link{position:absolute;top:-60px;left:8px;z-index:10000;padding:10px 16px;background:var(--water);color:var(--deep-text);border-radius:999px;font-family:'General Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:0.04em;transition:top 0.2s}
+.skip-link:focus{top:8px;outline:2px solid var(--sun);outline-offset:3px}
+
+/* VERSION SWITCHER — immersive */
+.version-switcher{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:4px;padding:6px;background:oklch(0.14 0.025 215 / 0.75);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid oklch(1 0 0 / 0.08);border-radius:999px;box-shadow:0 12px 40px oklch(0 0 0 / 0.35),0 0 0 1px oklch(1 0 0 / 0.04) inset;font-family:'General Sans',sans-serif}
+.version-switcher .vs-link,.version-switcher .vs-home{display:flex;align-items:center;justify-content:center;min-width:40px;height:36px;padding:0 14px;border-radius:999px;color:var(--deep-text);font-size:12px;letter-spacing:0.08em;font-weight:500;transition:background 0.25s,color 0.25s;text-decoration:none;opacity:0.7}
+.version-switcher .vs-home{padding:0 12px;font-size:7px;letter-spacing:0.3em;opacity:0.5}
+.version-switcher .vs-link:hover,.version-switcher .vs-home:hover{opacity:1;background:oklch(1 0 0 / 0.1)}
+.version-switcher .vs-link.is-active{background:var(--water);color:var(--deep);opacity:1;box-shadow:0 0 20px oklch(0.52 0.08 210 / 0.4)}
+
 </style>
 </head>
 <body x-data="shop()" x-init="init()">
@@ -216,7 +234,9 @@ body.js-ready button{cursor:none}
 <div class="cursor-trail" id="trail"></div>
 
 <!-- CART BUTTON -->
-<div class="cart-btn" @click="cartOpen=true" :class="{'cart-pulse':cartPulsing}" x-text="cartCount"></div>
+<a href="#main" class="skip-link">Passer au contenu</a>
+<button type="button" class="cart-btn" @click="cartOpen=true" :class="{'cart-pulse':cartPulsing}" :aria-label="`Ouvrir le panier (${cartCount} article${cartCount>1?'s':''})`"><span x-text="cartCount" aria-hidden="true"></span></button>
+<nav class="version-switcher" aria-label="Changer de concept visuel"><a href="/gallery.html" class="vs-home" title="Galerie">●●●</a><a href="/v1/" class="vs-link">01</a><a href="/v2/" class="vs-link">02</a><a href="/v3/" class="vs-link is-active" aria-current="page">03</a></nav>
 
 <!-- CART OVERLAY -->
 <div class="cart-overlay" :class="{'open':cartOpen}" @click="cartOpen=false"></div>
@@ -261,7 +281,7 @@ body.js-ready button{cursor:none}
   </template>
 </div>
 
-<main>
+<main id="main">
 <!-- HERO -->
 <section class="hero" id="hero">
   <canvas id="waterCanvas"></canvas>

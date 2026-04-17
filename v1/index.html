@@ -9,7 +9,13 @@
 <meta property="og:description" content="Douchette française éco-responsable aux pierres naturelles. Économisez 50% d'eau.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ecodouche.spawnkit.ai/v1/">
+<meta property="og:image" content="https://ecodouche.spawnkit.ai/img/DOUCHETTE_DUO_POWER_ECO_DOUCHE.jpg">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Power Eco-Douche">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ecodouche.spawnkit.ai/img/DOUCHETTE_DUO_POWER_ECO_DOUCHE.jpg">
+<meta name="theme-color" content="#5a7a5c">
+<link rel="canonical" href="https://ecodouche.spawnkit.ai/v1/">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -203,12 +209,29 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
   .reveal.revealed{opacity:1;transform:none}
 }
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none}}
+
+/* SKIP LINK (a11y) */
+.skip-link{position:absolute;top:-60px;left:8px;z-index:10000;padding:10px 16px;background:var(--ink);color:var(--paper);font-size:13px;letter-spacing:0.05em;border-radius:2px;transition:top 0.2s}
+.skip-link:focus{top:8px;outline:2px solid var(--gold);outline-offset:2px}
+
+/* VERSION SWITCHER */
+.version-switcher{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:4px;padding:8px;background:oklch(0.18 0.015 60 / 0.92);backdrop-filter:blur(12px);border-radius:999px;box-shadow:0 8px 32px oklch(0 0 0 / 0.18);font-family:'Instrument Sans',sans-serif}
+.version-switcher .vs-link,.version-switcher .vs-home{display:flex;align-items:center;justify-content:center;min-width:36px;height:36px;padding:0 14px;border-radius:999px;color:var(--paper);font-size:12px;letter-spacing:0.12em;font-weight:500;transition:background 0.25s,color 0.25s;text-decoration:none;opacity:0.75}
+.version-switcher .vs-home{padding:0 12px;font-size:8px;letter-spacing:0.3em;opacity:0.55}
+.version-switcher .vs-link:hover,.version-switcher .vs-home:hover{opacity:1;background:oklch(1 0 0 / 0.1)}
+.version-switcher .vs-link.is-active{background:var(--gold);color:var(--ink);opacity:1}
+@media(prefers-reduced-motion:reduce){.version-switcher .vs-link,.version-switcher .vs-home{transition:none}}
+
+/* Cart icon button reset */
+button.cart-icon{border:none;font:inherit}
 </style>
 </head>
 <body x-data="shop()" x-init="init()">
 
 <!-- CART ICON -->
-<div class="cart-icon" @click="cartOpen=true" :class="{'cart-bounce':cartBouncing}" x-text="cartCount"></div>
+<a href="#main" class="skip-link">Passer au contenu</a>
+<button type="button" class="cart-icon" @click="cartOpen=true" :class="{'cart-bounce':cartBouncing}" :aria-label="`Ouvrir le panier (${cartCount} article${cartCount>1?'s':''})`"><span x-text="cartCount" aria-hidden="true"></span></button>
+<nav class="version-switcher" aria-label="Changer de concept visuel"><a href="/gallery.html" class="vs-home" title="Galerie">●●●</a><a href="/v1/" class="vs-link is-active" aria-current="page">01</a><a href="/v2/" class="vs-link">02</a><a href="/v3/" class="vs-link">03</a></nav>
 
 <!-- CART OVERLAY -->
 <div class="cart-overlay" :class="{'open':cartOpen}" @click="cartOpen=false"></div>
@@ -267,7 +290,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
   </template>
 </div>
 
-<main>
+<main id="main">
 <!-- HERO -->
 <section class="hero pad-x">
   <div class="hero-ticker">TOURMALINE · GERMANIUM · ARGILE GRISE · ECO · FRANCE · 2026</div>

@@ -9,7 +9,13 @@
 <meta property="og:description" content="50% d'économie d'eau. Pierres naturelles. Design français brut et engagé.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ecodouche.spawnkit.ai/v2/">
+<meta property="og:image" content="https://ecodouche.spawnkit.ai/img/DOUCHETTE_DUO_POWER_ECO_DOUCHE.jpg">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Power Eco-Douche">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ecodouche.spawnkit.ai/img/DOUCHETTE_DUO_POWER_ECO_DOUCHE.jpg">
+<meta name="theme-color" content="#1e1e1a">
+<link rel="canonical" href="https://ecodouche.spawnkit.ai/v2/">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -245,12 +251,27 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
   .reveal.revealed{opacity:1;transform:none}
 }
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none}}
+
+/* SKIP LINK (a11y) */
+.skip-link{position:absolute;top:-60px;left:8px;z-index:10000;padding:10px 16px;background:var(--ink);color:var(--concrete);font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;transition:top 0.2s}
+.skip-link:focus{top:8px;outline:3px solid var(--rust);outline-offset:2px}
+
+/* VERSION SWITCHER — brutalist */
+.version-switcher{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:0;padding:0;background:var(--ink);border:2px solid var(--ink);font-family:'Archivo',sans-serif}
+.version-switcher .vs-link,.version-switcher .vs-home{display:flex;align-items:center;justify-content:center;min-width:48px;height:40px;padding:0 16px;color:var(--concrete);font-size:12px;letter-spacing:0.14em;font-weight:800;text-transform:uppercase;text-decoration:none;border-right:2px solid var(--concrete);transition:background 0.15s,color 0.15s}
+.version-switcher .vs-home{padding:0 12px;font-size:9px;letter-spacing:0.3em;font-weight:900}
+.version-switcher .vs-link:last-child,.version-switcher .vs-home:last-child{border-right:none}
+.version-switcher .vs-link:hover,.version-switcher .vs-home:hover{background:var(--rust)}
+.version-switcher .vs-link.is-active{background:var(--rust);color:var(--ink)}
+
 </style>
 </head>
 <body x-data="shop()" x-init="init()">
 
 <!-- CART ICON -->
-<div class="cart-icon" @click="cartOpen=true" :class="{'cart-bounce':cartBouncing}" x-text="cartCount"></div>
+<a href="#top" class="skip-link">PASSER AU CONTENU</a>
+<button type="button" class="cart-icon" @click="cartOpen=true" :class="{'cart-bounce':cartBouncing}" :aria-label="`OUVRIR LE PANIER (${cartCount})`"><span x-text="cartCount" aria-hidden="true"></span></button>
+<nav class="version-switcher" aria-label="Changer de concept visuel"><a href="/gallery.html" class="vs-home" title="Galerie">■■■</a><a href="/v1/" class="vs-link">01</a><a href="/v2/" class="vs-link is-active" aria-current="page">02</a><a href="/v3/" class="vs-link">03</a></nav>
 
 <!-- CART OVERLAY -->
 <div class="cart-overlay" :class="{'open':cartOpen}" @click="cartOpen=false"></div>
